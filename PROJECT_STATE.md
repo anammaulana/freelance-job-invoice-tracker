@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 4 - Expense & Finance Enhancement
 
-Current status: IN_PROGRESS
+Current status: QA
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -19,7 +19,7 @@ Completed sprints:
 - v2 Sprint 3: Document and attachment foundation.
 
 Pending sprints:
-- v2 Sprint 4: Expense and finance enhancement implementation is approved and in progress on `feature/v2-sprint-4-expense-finance`.
+- v2 Sprint 4: Expense and finance enhancement implementation is completed on `feature/v2-sprint-4-expense-finance` and is under QA verification.
 - v2 future sprints: audit log hardening, documentation hardening.
 
 Approved constraints:
@@ -111,6 +111,7 @@ Decisions:
 - 2026-08-01: v2 Sprint 4 plan prepared for Expense & Finance Enhancement; waiting for Owner sprint approval.
 - 2026-08-01: v2 Sprint 4 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-08-01: v2 Sprint 4 feature branch created: `feature/v2-sprint-4-expense-finance`.
+- 2026-08-01: v2 Sprint 4 implementation completed by Lincon in commit `8075175 feat: add v2 sprint 4 expenses and finance`; Sprint 4 moved to QA verification.
 
 Open issues:
 - No blocking open issues for v2 Sprint 4 implementation handoff.
@@ -130,7 +131,7 @@ Known risks:
 
 Last Owner approval: 2026-08-01 - v2 Sprint 4 plan approved.
 
-Next required Owner action: Wait for v2 Sprint 4 implementation, QA, documentation, and Sprint Review.
+Next required Owner action: Wait for v2 Sprint 4 QA, documentation, and Sprint Review.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
