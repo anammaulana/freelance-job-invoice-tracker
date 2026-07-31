@@ -63,7 +63,7 @@ Decisions:
 - 2026-07-31: Local Git branches `development`, `staging`, and `main` prepared from the Sprint 1 reviewed state.
 
 Open issues:
-- Public GitHub repository creation and branch push are pending GitHub access or a repository remote URL.
+- Public GitHub repository push is blocked: GitHub returned `Repository not found` for `https://github.com/anammaulana/freelance-job-invoice-tracker.git`.
 - Sprint 1 result approval remains pending until repository publishing revision is completed or explicitly waived by Owner.
 
 Known risks:
@@ -73,7 +73,7 @@ Known risks:
 
 Last Owner approval: 2026-07-31 - Sprint 1 plan approved.
 
-Next required Owner action: Install/connect GitHub access for this agent, or provide an existing GitHub repository URL to use as `origin`.
+Next required Owner action: Confirm the GitHub repository URL is correct and public, or connect GitHub write access for this agent.
 
 Sprint 1 implementation handoff:
 - Project folder: `C:\Users\anam.maulana\.openclaw\workspace\projects\freelance-job-invoice-tracker`
