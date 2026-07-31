@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
@@ -59,12 +60,20 @@ Route::middleware('auth')->group(function () {
         ->middlewareFor(['create', 'store'], 'permission:invoices.create')
         ->middlewareFor(['edit', 'update'], 'permission:invoices.update')
         ->middlewareFor(['destroy'], 'permission:invoices.delete');
+    Route::resource('expenses', ExpenseController::class)
+        ->middlewareFor(['index', 'show'], 'permission:expenses.view')
+        ->middlewareFor(['create', 'store'], 'permission:expenses.create')
+        ->middlewareFor(['edit', 'update'], 'permission:expenses.update')
+        ->middlewareFor(['destroy'], 'permission:expenses.delete');
     Route::post('/clients/{client}/documents', [DocumentController::class, 'storeForClient'])
         ->middleware('permission:documents.manage')
         ->name('clients.documents.store');
     Route::post('/invoices/{invoice}/documents', [DocumentController::class, 'storeForInvoice'])
         ->middleware('permission:documents.manage')
         ->name('invoices.documents.store');
+    Route::post('/expenses/{expense}/documents', [DocumentController::class, 'storeForExpense'])
+        ->middleware('permission:documents.manage')
+        ->name('expenses.documents.store');
     Route::resource('invoices.payments', PaymentController::class)
         ->except(['index', 'show'])
         ->middlewareFor(['create', 'store'], 'permission:payments.create')

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Client;
 use App\Models\Document;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Project;
@@ -97,12 +98,14 @@ class DocumentAttachmentTest extends TestCase
         ]);
         $invoice = Invoice::factory()->for($project)->create();
         $payment = Payment::factory()->for($invoice)->create();
+        $expense = Expense::factory()->for($project)->create();
 
         $targets = [
             [route('projects.tasks.documents.store', [$project, $task]), ProjectTask::class, $task->id, 'task.pdf'],
             [route('clients.documents.store', $client), Client::class, $client->id, 'client.pdf'],
             [route('invoices.documents.store', $invoice), Invoice::class, $invoice->id, 'invoice.pdf'],
             [route('invoices.payments.documents.store', [$invoice, $payment]), Payment::class, $payment->id, 'payment.pdf'],
+            [route('expenses.documents.store', $expense), Expense::class, $expense->id, 'expense.pdf'],
         ];
 
         foreach ($targets as [$route, $type, $id, $filename]) {
@@ -149,13 +152,14 @@ class DocumentAttachmentTest extends TestCase
             ->assertForbidden();
     }
 
-    public function test_finance_can_manage_invoice_and_payment_documents_only(): void
+    public function test_finance_can_manage_invoice_payment_and_expense_documents_only(): void
     {
         Storage::fake(Document::DISK);
 
         $finance = User::factory()->role(RbacPermissions::FINANCE)->create();
         $invoice = Invoice::factory()->for(Project::factory()->for(Client::factory()))->create();
         $payment = Payment::factory()->for($invoice)->create();
+        $expense = Expense::factory()->for($invoice->project)->create();
 
         $this->actingAs($finance)->post(route('invoices.documents.store', $invoice), [
             'document' => UploadedFile::fake()->create('invoice-note.pdf', 20, 'application/pdf'),
@@ -164,9 +168,13 @@ class DocumentAttachmentTest extends TestCase
         $this->actingAs($finance)->post(route('invoices.payments.documents.store', [$invoice, $payment]), [
             'document' => UploadedFile::fake()->create('payment-note.pdf', 20, 'application/pdf'),
         ])->assertRedirect();
+        $this->actingAs($finance)->post(route('expenses.documents.store', $expense), [
+            'document' => UploadedFile::fake()->create('expense-note.pdf', 20, 'application/pdf'),
+        ])->assertRedirect();
 
         $this->assertDatabaseHas('documents', ['attachable_type' => Invoice::class, 'attachable_id' => $invoice->id]);
         $this->assertDatabaseHas('documents', ['attachable_type' => Payment::class, 'attachable_id' => $payment->id]);
+        $this->assertDatabaseHas('documents', ['attachable_type' => Expense::class, 'attachable_id' => $expense->id]);
     }
 
     public function test_unauthenticated_document_requests_are_blocked(): void

@@ -4,7 +4,7 @@
         <p class="mt-1 text-sm text-zinc-600">Ringkasan performa client, project, invoice, dan payment.</p>
     </div>
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
             <p class="text-sm text-zinc-600">Total clients</p>
             <p class="mt-2 text-2xl font-semibold text-zinc-950">{{ $metrics['client_count'] }}</p>
@@ -20,6 +20,14 @@
         <div class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
             <p class="text-sm text-zinc-600">Total income</p>
             <p class="mt-2 text-2xl font-semibold text-zinc-950">{{ number_format($metrics['total_income'], 2) }}</p>
+        </div>
+        <div class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+            <p class="text-sm text-zinc-600">Total expenses</p>
+            <p class="mt-2 text-2xl font-semibold text-zinc-950">{{ number_format($metrics['total_expenses'], 2) }}</p>
+        </div>
+        <div class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+            <p class="text-sm text-zinc-600">Net profit</p>
+            <p class="mt-2 text-2xl font-semibold text-zinc-950">{{ number_format($metrics['net_profit'], 2) }}</p>
         </div>
     </div>
 

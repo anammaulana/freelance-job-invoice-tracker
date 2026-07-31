@@ -14,11 +14,16 @@ class ReportController extends Controller
     {
         $filters = $this->filters($request);
         $payments = $incomeReportService->payments($filters);
+        $expenses = $incomeReportService->expenses($filters);
+        $financeSummary = $incomeReportService->financeSummary($payments, $expenses);
 
         return view('reports.income', [
             'filters' => $filters,
             'payments' => $payments,
-            'totalIncome' => $incomeReportService->total($payments),
+            'expenses' => $expenses,
+            'totalIncome' => $financeSummary['income'],
+            'totalExpenses' => $financeSummary['expenses'],
+            'netProfit' => $financeSummary['net_profit'],
             'statusRecap' => $incomeReportService->invoiceStatusRecap(),
         ]);
     }

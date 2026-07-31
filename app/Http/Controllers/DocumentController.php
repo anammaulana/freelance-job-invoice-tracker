@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreDocumentRequest;
 use App\Models\Client;
 use App\Models\Document;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Project;
@@ -55,6 +56,14 @@ class DocumentController extends Controller
         return back()->with('status', 'Document berhasil diunggah.');
     }
 
+    public function storeForExpense(StoreDocumentRequest $request, Expense $expense): RedirectResponse
+    {
+        $this->authorizeDocumentWrite($request->user(), $expense);
+        $this->documents->store($expense, $request->file('document'), $request->user());
+
+        return back()->with('status', 'Document berhasil diunggah.');
+    }
+
     public function storeForPayment(StoreDocumentRequest $request, Invoice $invoice, Payment $payment): RedirectResponse
     {
         abort_unless($payment->invoice_id === $invoice->id, 404);
@@ -91,6 +100,7 @@ class DocumentController extends Controller
             ProjectTask::class => 'project-workflow.view',
             Client::class => 'clients.view',
             Invoice::class, Payment::class => 'invoices.view',
+            Expense::class => 'expenses.view',
             default => null,
         };
 
@@ -106,6 +116,7 @@ class DocumentController extends Controller
             Client::class => 'clients.update',
             Invoice::class => 'invoices.update',
             Payment::class => 'payments.update',
+            Expense::class => 'expenses.update',
             default => null,
         };
 

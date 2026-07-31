@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -19,6 +20,20 @@ class IncomeReportService
             ->when($filters['start_date'] ?? null, fn ($query, string $date) => $query->whereDate('payment_date', '>=', $date))
             ->when($filters['end_date'] ?? null, fn ($query, string $date) => $query->whereDate('payment_date', '<=', $date))
             ->orderByDesc('payment_date')
+            ->orderByDesc('id')
+            ->get();
+    }
+
+    /**
+     * @param  array{start_date?: string|null, end_date?: string|null}  $filters
+     * @return EloquentCollection<int, Expense>
+     */
+    public function expenses(array $filters): EloquentCollection
+    {
+        return Expense::with('project.client')
+            ->when($filters['start_date'] ?? null, fn ($query, string $date) => $query->whereDate('expense_date', '>=', $date))
+            ->when($filters['end_date'] ?? null, fn ($query, string $date) => $query->whereDate('expense_date', '<=', $date))
+            ->orderByDesc('expense_date')
             ->orderByDesc('id')
             ->get();
     }
@@ -53,5 +68,22 @@ class IncomeReportService
     public function total(EloquentCollection $payments): float
     {
         return (float) $payments->sum('amount');
+    }
+
+    /**
+     * @param  EloquentCollection<int, Payment>  $payments
+     * @param  EloquentCollection<int, Expense>  $expenses
+     * @return array{income: float, expenses: float, net_profit: float}
+     */
+    public function financeSummary(EloquentCollection $payments, EloquentCollection $expenses): array
+    {
+        $income = (float) $payments->sum('amount');
+        $expenseTotal = (float) $expenses->sum('amount');
+
+        return [
+            'income' => $income,
+            'expenses' => $expenseTotal,
+            'net_profit' => $income - $expenseTotal,
+        ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Client;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Project;
@@ -46,6 +47,12 @@ class DashboardReportTest extends TestCase
             'payment_date' => '2026-02-01',
             'amount' => '200.00',
         ]);
+        Expense::factory()->for($activeProject)->create([
+            'expense_date' => '2026-02-02',
+            'amount' => '60.00',
+            'category' => 'Software',
+            'description' => 'Tools',
+        ]);
 
         foreach (range(1, 6) as $index) {
             Payment::factory()->for($overdueInvoice)->create([
@@ -65,6 +72,10 @@ class DashboardReportTest extends TestCase
             ->assertSee('1,440.00')
             ->assertSee('Total income')
             ->assertSee('260.00')
+            ->assertSee('Total expenses')
+            ->assertSee('60.00')
+            ->assertSee('Net profit')
+            ->assertSee('200.00')
             ->assertSee('INV-OVERDUE')
             ->assertDontSee('INV-CANCELLED')
             ->assertSee('2026-03-06')

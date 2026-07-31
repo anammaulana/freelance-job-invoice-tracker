@@ -26,6 +26,9 @@
                     @can('invoices.view')
                         <a href="{{ route('invoices.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('invoices.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Invoices</a>
                     @endcan
+                    @can('expenses.view')
+                        <a href="{{ route('expenses.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('expenses.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Expenses</a>
+                    @endcan
                     @can('reports.view')
                         <a href="{{ route('reports.income') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('reports.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Reports</a>
                     @endcan

@@ -51,6 +51,11 @@ class Project extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     public function milestones(): HasMany
     {
         return $this->hasMany(ProjectMilestone::class);

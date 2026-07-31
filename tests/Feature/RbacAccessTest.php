@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Client;
+use App\Models\Expense;
 use App\Models\Invoice;
 use App\Models\Project;
 use App\Models\User;
@@ -37,11 +38,14 @@ class RbacAccessTest extends TestCase
         $client = Client::factory()->create(['name' => 'Admin Client']);
         $project = Project::factory()->for($client)->create(['name' => 'Admin Project']);
         $invoice = Invoice::factory()->for($project)->create(['invoice_number' => 'INV-ADMIN']);
+        $expense = Expense::factory()->for($project)->create(['category' => 'Admin Expense']);
 
         $this->actingAs($user)->get(route('dashboard'))->assertOk();
         $this->actingAs($user)->get(route('clients.index'))->assertOk()->assertSee('Admin Client');
         $this->actingAs($user)->get(route('projects.index'))->assertOk()->assertSee('Admin Project');
         $this->actingAs($user)->get(route('invoices.index'))->assertOk()->assertSee('INV-ADMIN');
+        $this->actingAs($user)->get(route('expenses.index'))->assertOk()->assertSee('Admin Expense');
+        $this->actingAs($user)->delete(route('expenses.destroy', $expense))->assertRedirect();
         $this->actingAs($user)->get(route('reports.income'))->assertOk();
     }
 
@@ -51,10 +55,12 @@ class RbacAccessTest extends TestCase
         $client = Client::factory()->create();
         $project = Project::factory()->for($client)->create();
         $invoice = Invoice::factory()->for($project)->create();
+        $expense = Expense::factory()->for($project)->create();
 
         $this->actingAs($user)->get(route('clients.index'))->assertOk();
         $this->actingAs($user)->get(route('projects.index'))->assertOk();
         $this->actingAs($user)->get(route('invoices.index'))->assertOk();
+        $this->actingAs($user)->get(route('expenses.index'))->assertOk();
         $this->actingAs($user)->get(route('dashboard'))->assertOk();
 
         $this->actingAs($user)->get(route('clients.create'))->assertForbidden();
@@ -65,6 +71,9 @@ class RbacAccessTest extends TestCase
         $this->actingAs($user)->put(route('projects.update', $project), $this->projectPayload($client))->assertForbidden();
         $this->actingAs($user)->get(route('invoices.create'))->assertForbidden();
         $this->actingAs($user)->delete(route('invoices.destroy', $invoice))->assertForbidden();
+        $this->actingAs($user)->get(route('expenses.create'))->assertForbidden();
+        $this->actingAs($user)->put(route('expenses.update', $expense), $this->expensePayload())->assertForbidden();
+        $this->actingAs($user)->delete(route('expenses.destroy', $expense))->assertForbidden();
     }
 
     public function test_finance_can_access_finance_modules_and_is_blocked_from_non_finance_mutations(): void
@@ -75,6 +84,7 @@ class RbacAccessTest extends TestCase
 
         $this->actingAs($user)->get(route('dashboard'))->assertOk();
         $this->actingAs($user)->get(route('invoices.index'))->assertOk();
+        $this->actingAs($user)->get(route('expenses.index'))->assertOk();
         $this->actingAs($user)->get(route('reports.income'))->assertOk();
         $this->actingAs($user)->get(route('clients.index'))->assertForbidden();
         $this->actingAs($user)->get(route('projects.index'))->assertForbidden();
@@ -88,6 +98,7 @@ class RbacAccessTest extends TestCase
             'amount' => '500.00',
             'status' => Invoice::STATUS_DRAFT,
         ])->assertRedirect();
+        $this->actingAs($user)->post(route('expenses.store'), $this->expensePayload())->assertRedirect();
     }
 
     public function test_project_manager_can_access_client_project_modules_and_is_blocked_from_finance_mutations(): void
@@ -100,6 +111,7 @@ class RbacAccessTest extends TestCase
         $this->actingAs($user)->get(route('clients.index'))->assertOk();
         $this->actingAs($user)->get(route('projects.index'))->assertOk();
         $this->actingAs($user)->get(route('invoices.index'))->assertForbidden();
+        $this->actingAs($user)->get(route('expenses.index'))->assertForbidden();
         $this->actingAs($user)->get(route('reports.income'))->assertForbidden();
         $this->actingAs($user)->post(route('invoices.store'), [
             'project_id' => $project->id,
@@ -109,6 +121,7 @@ class RbacAccessTest extends TestCase
             'status' => Invoice::STATUS_DRAFT,
         ])->assertForbidden();
         $this->actingAs($user)->post(route('clients.store'), $this->clientPayload())->assertRedirect();
+        $this->actingAs($user)->post(route('expenses.store'), $this->expensePayload())->assertForbidden();
     }
 
     public function test_unauthorized_user_with_no_role_is_forbidden_after_login(): void
@@ -145,6 +158,20 @@ class RbacAccessTest extends TestCase
             'deadline' => '2026-08-15',
             'project_value' => '12000.50',
             'status' => Project::STATUS_DRAFT,
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function expensePayload(): array
+    {
+        return [
+            'category' => 'RBAC Expense',
+            'expense_date' => '2026-08-01',
+            'amount' => '100.00',
+            'description' => 'RBAC expense payload.',
+            'vendor' => 'RBAC Vendor',
         ];
     }
 }
