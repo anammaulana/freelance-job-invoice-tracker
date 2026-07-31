@@ -261,11 +261,13 @@ php artisan migrate:fresh --seed --no-interaction
 
 Result: passed.
 
+RBAC migration rollback check: passed.
+
 ```bash
 php artisan test
 ```
 
-Result after v2 Sprint 1: see latest sprint delivery report.
+Result after v2 Sprint 1: passed with 33 tests and 225 assertions.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -279,7 +281,7 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict after v2 Sprint 1: see latest sprint delivery report.
+QA verdict after v2 Sprint 1: PASS WITH NOTES.
 
 Defects found: none.
 

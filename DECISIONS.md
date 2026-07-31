@@ -16,3 +16,8 @@
 - The Admin role is treated as a full-access role through `User::hasPermission()`.
 - Non-admin roles receive explicit permissions through seeded role-permission mappings.
 - Route middleware is the source of backend authorization for the current Blade modules.
+- Blade navigation and action buttons use permission checks so visible actions match backend authorization.
+- Finance is limited to dashboard, invoice, payment, income report, and report export permissions.
+- Project Manager is limited to dashboard, client, and project permissions.
+- Viewer is read-only for dashboard, clients, projects, invoices, and reports.
+- RBAC management UI, audit logging, project workflow, documents, expenses, API, Docker, and production deployment are outside v2 Sprint 1.
