@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -16,7 +18,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::redirect('/home', '/clients')->name('home');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::redirect('/home', '/dashboard')->name('home');
+    Route::get('/reports/income', [ReportController::class, 'income'])->name('reports.income');
+    Route::get('/reports/income/export', [ReportController::class, 'exportIncome'])->name('reports.income.export');
+
     Route::resource('clients', ClientController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('invoices', InvoiceController::class);
