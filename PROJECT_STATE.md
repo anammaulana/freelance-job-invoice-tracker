@@ -4,11 +4,11 @@ Project name: Freelance Job & Invoice Tracker
 
 Project objective: Build a local Laravel web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, automated tests, and final documentation.
 
-Approved requirement version: v1
+Approved requirement version: v2 enhancement
 
-Current sprint: Sprint 3 - Dashboard, Excel Reports, QA, and Final Documentation
+Current sprint: v2 Sprint 1 - Architecture Baseline and RBAC Foundation
 
-Current status: DONE
+Current status: WAITING_SPRINT_PLAN_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -16,7 +16,8 @@ Completed sprints:
 - Sprint 3: Dashboard, Excel reports, automated testing, QA fixes, and final documentation.
 
 Pending sprints:
-- None.
+- v2 Sprint 1: Architecture baseline and RBAC foundation.
+- v2 future sprints: project workflow, documents, expenses/finance enhancement, audit log, documentation hardening.
 
 Approved constraints:
 - Laravel with Blade.
@@ -32,6 +33,11 @@ Approved constraints:
 - Each sprint must have a clear commit.
 - No features outside approved scope without Owner approval.
 - Income report export must use Excel instead of CSV.
+- v2 remains modular monolith on Laravel 13, Blade, Tailwind CSS, and SQLite.
+- v2 modules should follow Controller -> Service -> Repository when needed -> Model.
+- Complex business logic must not live in controllers.
+- One v2 sprint must be deliverable and testable within one day.
+- Every v2 sprint requires Owner approval before implementation and QA before result approval.
 
 Approved business rules:
 - One user role only: Admin/Freelancer.
@@ -46,6 +52,10 @@ Approved business rules:
 - Total payment amount cannot exceed invoice amount.
 - Invoice status becomes `Partial` when partially paid.
 - Invoice status becomes `Paid` when total payments reach invoice amount.
+- v2 roles: Admin, Finance, Project Manager, Viewer.
+- v2 project workflow uses milestone plus simple task kanban, without complex drag-and-drop in initial v2 scope.
+- v2 documents can attach to client, project, invoice, payment, expense, or task.
+- v2 important data changes must be audit logged.
 
 Decisions:
 - 2026-07-31: Requirement v1 approved by Owner via `APPROVE REQUIREMENT`.
@@ -72,9 +82,10 @@ Decisions:
 - 2026-07-31: Sprint 3 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: Owner requested Sprint 3 revision via `REVISION RESULT` because Excel export still errored.
 - 2026-07-31: Sprint 3 result approved by Owner via `APPROVE RESULT`.
+- 2026-07-31: v2 enhancement requirement approved by Owner via `APPROVE REQUIREMENT`.
 
 Open issues:
-- None.
+- v2 Sprint 1 plan is ready and waiting for Owner approval.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -83,7 +94,31 @@ Known risks:
 
 Last Owner approval: 2026-07-31 - Sprint 3 result approved.
 
-Next required Owner action: Review final delivery summary; optional next step is promotion from `development` to `staging` and `main`.
+Next required Owner action: Review v2 Sprint 1 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
+
+v2 approved requirement:
+- Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
+- Architecture baseline: modular monolith; Laravel 13; Blade; Tailwind CSS; SQLite; Controller -> Service -> Repository when needed -> Model; no complex business logic in controllers.
+- RBAC scope: Admin, Finance, Project Manager, Viewer with flexible permissions.
+- Workflow scope: milestones, weighted progress, tasks with statuses Backlog/To Do/In Progress/Review/Done/Cancelled, assignee, priority, due date, description, progress, attachment, and project activity timeline.
+- Finance/document/audit scope: expense management, finance report enhancement, document attachment metadata, and audit log for important changes.
+- Git workflow: one sprint uses one feature branch and clear commits using `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, or `chore:`.
+- Testing standard: unit tests for important services, feature tests for endpoint/web flows, regression tests for impacted stable features, QA evidence per sprint.
+- Documentation scope: README, CHANGELOG, PROJECT_STATE.md, DECISIONS.md, Sprint Report, and simple ERD for important database changes.
+- Performance/UI/security baseline: dashboard target under 2 seconds for reasonable local data, pagination/search for large tables, avoid N+1 queries, Tailwind consistency, empty/loading states, endpoint authorization, input validation, upload MIME/size limits, non-editable audit logs.
+- Excluded scope: complex drag-and-drop kanban, real-time collaboration, public API, Docker, multi-tenant SaaS, external storage, email/WhatsApp notification, payment gateway, e-signature, production deployment automation, and mobile app.
+
+v2 Sprint 1 plan:
+- Sprint title: Architecture Baseline and RBAC Foundation.
+- Sprint goal: Establish the v2 technical baseline and flexible role/permission foundation without changing stable feature behavior unnecessarily.
+- Included scope: create DECISIONS.md, CHANGELOG.md baseline if missing, document module conventions, add roles/permissions schema, seed Admin/Finance/Project Manager/Viewer roles, assign demo user Admin role, enforce initial authorization on existing modules, add authorization helpers/policies/middleware as appropriate, add regression tests for existing stable flows under Admin, add basic forbidden-access tests for non-authorized roles.
+- Excluded scope: milestones, task kanban, documents, expenses, audit log implementation, finance report enhancement, complex UI redesign, drag-and-drop, external services, Docker, API, and production deployment.
+- Programmer tasks: S1-V2-PROG-01 implement architecture/documentation baseline files; S1-V2-PROG-02 implement RBAC data model, seeders, authorization checks, and tests; S1-V2-PROG-03 fix Sprint 1 QA defects only within approved scope.
+- QA tasks: S1-V2-QA-01 verify migration/seed, role permissions, protected routes, regression flows, tests, Pint, and build.
+- Technical Writer tasks: S1-V2-DOC-01 update README/CHANGELOG/DECISIONS after QA PASS or PASS WITH NOTES.
+- Dependencies: existing users table, auth middleware, stable client/project/invoice/payment/report modules.
+- Risks: RBAC can accidentally block existing stable flows; permission mapping must be small enough for one-day scope; SQLite FK behavior must be verified.
+- Acceptance criteria: migrations are reversible; roles and permissions are seeded; demo user has Admin access; Admin can access existing stable modules; Viewer cannot create/update/delete; Finance can access finance-related modules only where implemented; Project Manager can access project/client workflow-adjacent modules only where implemented; unauthorized requests receive expected forbidden/redirect behavior; existing v1 feature tests still pass; new RBAC tests pass; README/CHANGELOG/DECISIONS are updated after QA.
 
 Sprint 3 plan:
 - Sprint title: Dashboard, Excel Reports, QA, and Final Documentation.
