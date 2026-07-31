@@ -66,9 +66,10 @@ Decisions:
 - 2026-07-31: Branches `main`, `staging`, and `development` pushed to GitHub.
 - 2026-07-31: Sprint 1 result approved by Owner via `APPROVE RESULT` with requirement change: replace CSV export with Excel export.
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
+- 2026-07-31: Owner requested Sprint 2 revision via `REVISION RESULT`; remaining QA note must be resolved before result approval.
 
 Open issues:
-- Sprint 2 review is ready and waiting for Owner result approval.
+- Sprint 2 revised review is ready and waiting for Owner result approval.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -113,6 +114,14 @@ Sprint 2 review:
 - Documentation status: Completed.
 - Known limitations: dashboard metrics, Excel export, income reports, public API, Docker support, multi-role authorization, and production deployment documentation are not completed in Sprint 2.
 - Owner approval required before marking Sprint 2 complete and preparing Sprint 3 plan.
+
+Sprint 2 revision:
+- Revision task: S2-REV-01
+- Owner request: Resolve the part that is not yet aligned with the original plan before Sprint 2 result approval.
+- Scope: Add dedicated automated authentication coverage for nested payment routes.
+- Changed file: `tests/Feature/AuthenticationTest.php`.
+- Verification: `php artisan migrate:fresh --seed --no-interaction` passed; `php artisan test` passed with 23 tests and 120 assertions; `.\\vendor\\bin\\pint --test` passed; `npm run build` passed.
+- Result: PASS. Remaining QA note resolved; Sprint 2 returned to result approval.
 
 Sprint 1 implementation handoff:
 - Project folder: `C:\Users\anam.maulana\.openclaw\workspace\projects\freelance-job-invoice-tracker`

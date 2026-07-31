@@ -197,7 +197,7 @@ Result: passed.
 php artisan test
 ```
 
-Result: `22 tests, 110 assertions`.
+Result after Sprint 2 revision: `23 tests, 120 assertions`.
 
 ```powershell
 .\vendor\bin\pint --test
