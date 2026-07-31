@@ -6,9 +6,9 @@ Project objective: Build a local Laravel web application for freelancers to mana
 
 Approved requirement version: v2 enhancement
 
-Current sprint: v2 Sprint 5 - Audit Log Hardening
+Current sprint: v2 Sprint 6 - Final Documentation & Handover Hardening
 
-Current status: WAITING_SPRINT_RESULT_APPROVAL
+Current status: WAITING_SPRINT_PLAN_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -18,10 +18,10 @@ Completed sprints:
 - v2 Sprint 2: Project workflow foundation.
 - v2 Sprint 3: Document and attachment foundation.
 - v2 Sprint 4: Expense and finance enhancement.
+- v2 Sprint 5: Audit log hardening.
 
 Pending sprints:
-- v2 Sprint 5: Audit log hardening completed, reviewed, and waiting for Owner result approval.
-- v2 future sprints: documentation hardening.
+- v2 Sprint 6: Final documentation and handover hardening awaiting Owner sprint approval.
 
 Approved constraints:
 - Laravel with Blade.
@@ -123,9 +123,11 @@ Decisions:
 - 2026-08-01: v2 Sprint 5 QA completed by Nadella with verdict `PASS WITH NOTES`; documentation may proceed.
 - 2026-08-01: v2 Sprint 5 documentation completed by Sara; Sprint Review still requires Owner result approval.
 - 2026-08-01: v2 Sprint 5 Review prepared; waiting for Owner result approval.
+- 2026-08-01: v2 Sprint 5 result approved by Owner via `APPROVE RESULT`.
+- 2026-08-01: v2 Sprint 6 plan prepared for Final Documentation & Handover Hardening; waiting for Owner sprint approval.
 
 Open issues:
-- No blocking open issues for v2 Sprint 5 result approval gate.
+- No blocking open issues for v2 Sprint 6 planning gate.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
 - QA note carried forward: custom non-Admin roles with only `audit-logs.view` may need target-module filtering before broader audit access is enabled.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
@@ -142,10 +144,11 @@ Known risks:
 - v2 Sprint 4 finance reports must clearly separate income, expenses, and net profit calculations.
 - v2 Sprint 5 audit logging must stay tamper-resistant without overbuilding a full compliance module.
 - v2 Sprint 5 must avoid logging secrets, uploaded file contents, or sensitive full payloads.
+- v2 Sprint 6 must document verified behavior only and must not imply excluded production, API, mobile, external integration, or compliance capabilities are implemented.
 
-Last Owner approval: 2026-08-01 - v2 Sprint 5 plan approved.
+Last Owner approval: 2026-08-01 - v2 Sprint 5 result approved.
 
-Next required Owner action: Review v2 Sprint 5 result and reply with `APPROVE RESULT`, `REVISION RESULT`, or `CANCEL PROJECT`.
+Next required Owner action: Review v2 Sprint 6 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -565,4 +568,19 @@ v2 Sprint 5 Review:
 - Acceptance criteria result: 11/11 acceptable; 10 PASS and 1 PASS WITH NOTE.
 - Definition of Done result: PASS WITH NOTES.
 - Result: PASS WITH NOTES.
-- Owner approval status: Waiting for Owner result approval.
+- Owner approval status: Approved by Owner on 2026-08-01.
+
+v2 Sprint 6 plan:
+- Sprint title: Final Documentation & Handover Hardening.
+- Sprint goal: Prepare a clean, client-ready v2 handover package that accurately documents verified behavior, setup, data model impact, QA evidence, known limitations, and recommended next steps without adding application features.
+- Included scope: README hardening; CHANGELOG and DECISIONS consistency review; PROJECT_STATE completion traceability; simple ERD for important database tables and relationships; consolidated Sprint Report or handover notes covering v1 and v2 completed scope; final verification commands; delivery checklist; rollback and local setup notes; known limitations and future backlog recommendations.
+- Excluded scope: new application features, UI redesign, database schema changes, production deployment automation, Docker setup, public API, mobile app, payment gateway, external accounting integration, compliance certification, SIEM/monitoring integration, or any unverified behavior documentation.
+- Deliverables: updated README with final local setup, demo usage, verified feature list, roles/permissions summary, QA/test evidence, database overview, and limitations; updated CHANGELOG and DECISIONS if consistency gaps are found; `docs/` handover artifact if useful; simple ERD diagram or Markdown database relationship section; final project state update after QA and documentation review.
+- Programmer tasks: S6-V2-PROG-01 support documentation verification only if final commands reveal a code or setup mismatch; no feature work without new Owner approval.
+- QA tasks: S6-V2-QA-01 verify documented setup commands, migration/seed behavior, test suite, build command, major documented workflows, and that documentation does not claim excluded or unverified features.
+- Technical Writer tasks: S6-V2-DOC-01 produce final handover documentation, ERD/database summary, changelog consistency, known limitations, and next-step recommendations using only verified behavior.
+- Dependencies: completed v1 Sprints 1-3 and v2 Sprints 1-5; clean Sprint 5 branch; verified QA evidence from prior sprints.
+- Risks: documentation can drift from actual behavior if not checked against source and QA evidence; final handover may accidentally overstate future-scope features; one-day scope must avoid turning documentation hardening into implementation.
+- Acceptance criteria: README has clear local setup and demo instructions; verified v1 and v2 features are summarized accurately; roles and permissions are documented at a usable level; database impact and key relationships are documented through ERD or equivalent Markdown summary; final test/build evidence is recorded; known limitations and future scope are explicit; documentation does not expose secrets or client data; documentation does not claim excluded features as implemented; QA verifies documentation against the application and commands; PROJECT_STATE records Sprint 6 review and final approval gate status.
+- Definition of Done: Sara completes documentation only for verified behavior; Nadella returns final QA verdict minimum PASS WITH NOTES; any mismatch found by QA is corrected and retested; no application feature changes are introduced without Owner approval; Scofield sends Sprint Review for Owner result approval.
+- Approval status: Waiting for Owner sprint approval.
