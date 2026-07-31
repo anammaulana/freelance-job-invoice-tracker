@@ -1,58 +1,163 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Freelance Job & Invoice Tracker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel 13 application for tracking freelance clients and projects. This README documents the verified Sprint 1 scope only.
 
-## About Laravel
+## Tech Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Laravel 13
+- PHP 8.3+
+- Blade
+- Tailwind CSS with Vite
+- SQLite for local development
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Local Setup
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. Install PHP dependencies.
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. Install frontend dependencies.
 
-## Contributing
+```bash
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. Create the local environment file.
 
-## Code of Conduct
+```bash
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+On Windows PowerShell:
 
-## Security Vulnerabilities
+```powershell
+Copy-Item .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Generate the application key.
 
-## License
+```bash
+php artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. Confirm SQLite is configured in `.env`.
+
+```dotenv
+DB_CONNECTION=sqlite
+```
+
+Do not commit real secrets or production credentials to `.env`.
+
+6. Create the SQLite database file if it does not exist.
+
+```bash
+touch database/database.sqlite
+```
+
+On Windows PowerShell:
+
+```powershell
+New-Item -ItemType File -Path database/database.sqlite -Force
+```
+
+7. Run migrations and seed demo data.
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+8. Build frontend assets.
+
+```bash
+npm run build
+```
+
+9. Start the local server.
+
+```bash
+php artisan serve
+```
+
+Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
+
+## Demo Account
+
+- Email: `demo@example.com`
+- Password: `password`
+
+## Sprint 1 Features
+
+- User login and logout.
+- Authentication protection for app pages.
+- Client management:
+  - create clients;
+  - view clients;
+  - update clients;
+  - delete clients when allowed.
+- Project management:
+  - create projects;
+  - view projects;
+  - update projects;
+  - delete projects.
+
+## Sprint 1 Business Rules
+
+### Clients
+
+- `name` is required.
+- `email` is required and must be a valid email address.
+- `phone_number` is required.
+- `company` is required.
+- `address` is required.
+- A client cannot be deleted when it has active projects.
+
+### Projects
+
+- A project must belong to a client.
+- `name` is required.
+- `description` is required.
+- `start date` is required.
+- `deadline` is required.
+- `deadline` cannot be earlier than `start date`.
+- `project value` is required.
+- `status` is required and must be one of:
+  - `Draft`
+  - `Active`
+  - `Completed`
+  - `Cancelled`
+
+## Testing
+
+Verified Sprint 1 command results:
+
+```bash
+php artisan test
+```
+
+Result: `14 tests, 62 assertions`.
+
+```powershell
+.\vendor\bin\pint --test
+```
+
+Result: passed.
+
+```bash
+npm run build
+```
+
+Result: passed.
+
+## Known Limitations
+
+The following items are out of scope for Sprint 1 and are not documented as completed features:
+
+- Invoice management.
+- Payment tracking.
+- Dashboard metrics.
+- Reports or CSV export.
+- Docker support.
+- Public API.
+- Multi-role authorization.
