@@ -39,7 +39,8 @@ class ProjectController extends Controller
             'client',
             'milestones' => fn ($query) => $query->orderBy('target_date'),
             'milestones.tasks',
-            'tasks' => fn ($query) => $query->with('milestone')->orderBy('due_date')->latest(),
+            'documents' => fn ($query) => $query->with('uploadedBy')->latest(),
+            'tasks' => fn ($query) => $query->with(['milestone', 'documents.uploadedBy'])->orderBy('due_date')->latest(),
             'activities' => fn ($query) => $query->with('user')->latest()->limit(10),
         ]);
 

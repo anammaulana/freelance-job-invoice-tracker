@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
@@ -41,20 +42,41 @@ Route::middleware('auth')->group(function () {
         ->middlewareFor(['create', 'store'], 'permission:projects.create')
         ->middlewareFor(['edit', 'update'], 'permission:projects.update')
         ->middlewareFor(['destroy'], 'permission:projects.delete');
+    Route::post('/projects/{project}/documents', [DocumentController::class, 'storeForProject'])
+        ->middleware('permission:documents.manage')
+        ->name('projects.documents.store');
     Route::resource('projects.milestones', ProjectMilestoneController::class)
         ->except(['index', 'show'])
         ->middlewareFor(['create', 'store', 'edit', 'update', 'destroy'], 'permission:project-workflow.manage');
     Route::resource('projects.tasks', ProjectTaskController::class)
         ->except(['index', 'show'])
         ->middlewareFor(['create', 'store', 'edit', 'update', 'destroy'], 'permission:project-workflow.manage');
+    Route::post('/projects/{project}/tasks/{task}/documents', [DocumentController::class, 'storeForTask'])
+        ->middleware('permission:documents.manage')
+        ->name('projects.tasks.documents.store');
     Route::resource('invoices', InvoiceController::class)
         ->middlewareFor(['index', 'show'], 'permission:invoices.view')
         ->middlewareFor(['create', 'store'], 'permission:invoices.create')
         ->middlewareFor(['edit', 'update'], 'permission:invoices.update')
         ->middlewareFor(['destroy'], 'permission:invoices.delete');
+    Route::post('/clients/{client}/documents', [DocumentController::class, 'storeForClient'])
+        ->middleware('permission:documents.manage')
+        ->name('clients.documents.store');
+    Route::post('/invoices/{invoice}/documents', [DocumentController::class, 'storeForInvoice'])
+        ->middleware('permission:documents.manage')
+        ->name('invoices.documents.store');
     Route::resource('invoices.payments', PaymentController::class)
         ->except(['index', 'show'])
         ->middlewareFor(['create', 'store'], 'permission:payments.create')
         ->middlewareFor(['edit', 'update'], 'permission:payments.update')
         ->middlewareFor(['destroy'], 'permission:payments.delete');
+    Route::post('/invoices/{invoice}/payments/{payment}/documents', [DocumentController::class, 'storeForPayment'])
+        ->middleware('permission:documents.manage')
+        ->name('invoices.payments.documents.store');
+    Route::get('/documents/{document}/download', [DocumentController::class, 'download'])
+        ->middleware('permission:documents.view')
+        ->name('documents.download');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])
+        ->middleware('permission:documents.manage')
+        ->name('documents.destroy');
 });

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 #[Fillable(['client_id', 'name', 'description', 'start_date', 'deadline', 'project_value', 'status', 'progress'])]
 class Project extends Model
@@ -63,5 +64,10 @@ class Project extends Model
     public function activities(): HasMany
     {
         return $this->hasMany(ProjectActivity::class);
+    }
+
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'attachable');
     }
 }

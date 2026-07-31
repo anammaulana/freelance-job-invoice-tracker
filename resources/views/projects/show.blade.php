@@ -30,6 +30,16 @@
         </div>
     </section>
 
+    @can('documents.view')
+        <section class="mt-6">
+            @include('documents._panel', [
+                'documents' => $project->documents,
+                'title' => 'Project documents',
+                'storeRoute' => route('projects.documents.store', $project),
+            ])
+        </section>
+    @endcan
+
     @can('project-workflow.view')
         <section class="mt-6 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
             <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -110,6 +120,7 @@
                                 <th class="px-4 py-3">Due</th>
                                 <th class="px-4 py-3">Status</th>
                                 <th class="px-4 py-3">Progress</th>
+                                <th class="px-4 py-3">Documents</th>
                                 @can('project-workflow.manage')
                                     <th class="px-4 py-3 text-right">Action</th>
                                 @endcan
@@ -128,6 +139,16 @@
                                     <td class="px-4 py-3 text-zinc-700">{{ $task->due_date?->format('Y-m-d') ?: '-' }}</td>
                                     <td class="px-4 py-3"><span class="rounded-full bg-zinc-100 px-2 py-1 text-xs text-zinc-700">{{ $task->status }}</span></td>
                                     <td class="px-4 py-3 text-zinc-700">{{ $task->progress }}%</td>
+                                    <td class="px-4 py-3">
+                                        @can('documents.view')
+                                            @include('documents._panel', [
+                                                'documents' => $task->documents,
+                                                'title' => 'Task documents',
+                                                'storeRoute' => route('projects.tasks.documents.store', [$project, $task]),
+                                                'compact' => true,
+                                            ])
+                                        @endcan
+                                    </td>
                                     @can('project-workflow.manage')
                                         <td class="px-4 py-3">
                                             <div class="flex justify-end gap-3">

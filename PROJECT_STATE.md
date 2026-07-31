@@ -6,7 +6,7 @@ Project objective: Build a local Laravel web application for freelancers to mana
 
 Approved requirement version: v2 enhancement
 
-Current sprint: v2 Sprint 3 - Document & Attachment Foundation
+Current sprint: v2 Sprint 4 - Expense & Finance Enhancement
 
 Current status: WAITING_SPRINT_PLAN_APPROVAL
 
@@ -16,10 +16,11 @@ Completed sprints:
 - Sprint 3: Dashboard, Excel reports, automated testing, QA fixes, and final documentation.
 - v2 Sprint 1: Architecture baseline and RBAC foundation.
 - v2 Sprint 2: Project workflow foundation.
+- v2 Sprint 3: Document and attachment foundation.
 
 Pending sprints:
-- v2 Sprint 3: Document and attachment foundation plan is prepared and waiting for Owner sprint approval.
-- v2 future sprints: expenses/finance enhancement, audit log hardening, documentation hardening.
+- v2 Sprint 4: Expense and finance enhancement plan is prepared; waiting for Owner sprint approval before implementation.
+- v2 future sprints: audit log hardening, documentation hardening.
 
 Approved constraints:
 - Laravel with Blade.
@@ -101,9 +102,18 @@ Decisions:
 - 2026-08-01: v2 Sprint 2 Review prepared; waiting for Owner result approval.
 - 2026-08-01: v2 Sprint 2 result approved by Owner via `APPROVE RESULT`; Owner requested v2 Sprint 3 planning for Document & Attachment Foundation before implementation.
 - 2026-08-01: v2 Sprint 3 plan prepared; waiting for Owner sprint approval.
+- 2026-08-01: v2 Sprint 3 plan approved by Owner via `APPROVE SPRINT`.
+- 2026-08-01: v2 Sprint 3 feature branch created: `feature/v2-sprint-3-documents-attachments`.
+- 2026-08-01: v2 Sprint 3 implementation completed by Lincon in commit `5ba8692 feat: add document attachment foundation`; Sprint 3 moved to QA verification.
+- 2026-08-01: v2 Sprint 3 QA completed by Nadella with verdict `PASS WITH NOTES`.
+- 2026-08-01: v2 Sprint 3 documentation completed by Sara; Sprint Review is ready for Scofield preparation.
+- 2026-08-01: v2 Sprint 3 result approved by Owner via `APPROVE RESULT`.
+- 2026-08-01: v2 Sprint 4 plan prepared for Expense & Finance Enhancement; waiting for Owner sprint approval.
 
 Open issues:
-- None for v2 Sprint 3 planning.
+- No blocking open issues for v2 Sprint 4 planning.
+- QA note carried forward: `npm run build` passes with optional `fontaine` warning.
+- Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -113,10 +123,12 @@ Known risks:
 - v2 Sprint 2 must avoid complex drag-and-drop and focus on testable milestone/task workflow.
 - v2 Sprint 3 file upload validation must prevent unsafe MIME types, oversized files, and path handling issues.
 - v2 Sprint 3 attachment relations must stay simple to fit one-day scope.
+- v2 Sprint 4 expense management must not accidentally change approved invoice/payment business rules.
+- v2 Sprint 4 finance reports must clearly separate income, expenses, and net profit calculations.
 
-Last Owner approval: 2026-08-01 - v2 Sprint 2 result approved.
+Last Owner approval: 2026-08-01 - v2 Sprint 3 result approved.
 
-Next required Owner action: Review v2 Sprint 3 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
+Next required Owner action: Review v2 Sprint 4 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -399,3 +411,56 @@ v2 Sprint 3 plan:
 - Risks: polymorphic attachment behavior can become too broad if every module gets complex UI; upload security must be conservative; expense attachment relation may need placeholder handling if expense module is not implemented yet.
 - Acceptance criteria: migration is reversible; documents store metadata including original filename, stored path, disk, MIME type, size, uploaded-by user, and attachment target; upload validation rejects unsupported MIME types; upload validation rejects files above the approved size limit; uploaded files are stored using Laravel local storage without exposing unsafe paths; documents can attach to project and task records; documents can attach to existing client, invoice, and payment records where implemented UI/routes are included; expense attachment relation is prepared only if it does not require building the expense module; Admin can manage documents; Project Manager can manage project/task-related documents; Viewer has read-only document access where permitted; Finance cannot access unauthorized project/task document writes; unauthorized upload/download requests are blocked; automated tests cover upload, invalid upload, relation, RBAC, and regression behavior; README/CHANGELOG/DECISIONS are updated after QA.
 - Definition of Done: Lincon completes only approved Sprint 3 implementation; automated tests pass or defects are fixed and retested; Nadella returns final QA verdict minimum PASS WITH NOTES; Sara updates documentation after QA; database impact, storage behavior, upload validation, and rollback behavior are recorded; known limitations are listed; Scofield sends Sprint Review for Owner result approval.
+
+v2 Sprint 3 implementation handoff:
+- Programmer tasks: S3-V2-PROG-01, S3-V2-PROG-02, S3-V2-PROG-03.
+- Commit: `5ba8692 feat: add document attachment foundation`.
+- Branch: `feature/v2-sprint-3-documents-attachments`.
+- Implemented scope: document metadata model, polymorphic attachment target, local storage upload/download/delete baseline, upload validation, Blade document panels, RBAC protection, and automated tests.
+- Attachment targets: Project, Project Task, Client, Invoice, and Payment. Expense attachment is prepared through polymorphic design only because the expense module is not implemented yet.
+- Database impact: added `documents` table with attachable type/id, uploaded-by user, original filename, stored path, disk, MIME type, size, and timestamps.
+- Storage behavior: uploaded files use Laravel local disk under `documents`; downloads go through controller routes instead of exposing raw filesystem paths.
+- Validation rules: local disk, `documents` directory, 5 MB max size, allowed extensions `pdf`, `jpg`, `jpeg`, `png`, `webp`, `txt`, `csv`, `doc`, `docx`, `xls`, and `xlsx`.
+- RBAC behavior: Admin has full document access; Project Manager manages project/task/client-related documents; Viewer has read-only access where parent record is permitted; Finance manages invoice/payment documents and is blocked from unauthorized project/task document access or writes.
+- Programmer verification: `php artisan migrate:fresh --seed --no-interaction` PASS; `php artisan migrate:rollback --step=1 --no-interaction` PASS; `php artisan migrate --no-interaction` PASS; `php artisan test` PASS with 47 tests and 310 assertions; `.\\vendor\\bin\\pint --test` PASS; `npm run build` PASS with existing optional `fontaine` warning.
+- Known limitations: no preview generation, public sharing, versioning, OCR, antivirus, bulk upload, or drag-and-drop; payment attachment UI is embedded on invoice detail; file deletion removes local file and metadata without recovery workflow.
+
+v2 Sprint 3 QA result:
+- QA task: S3-V2-QA-01.
+- Verdict: PASS WITH NOTES.
+- Commands passed: `php artisan migrate:fresh --seed --no-interaction`, rollback/reapply verification with `php artisan migrate:rollback --step=1 --no-interaction` and `php artisan migrate --no-interaction`, `php artisan test` with 47 tests and 310 assertions, `.\\vendor\\bin\\pint --test`, and `npm run build`.
+- Acceptance criteria result: document metadata, polymorphic attachment relation, project/task/client/invoice/payment attachment targets, local storage behavior, upload/download/delete baseline, unsupported MIME rejection, max-size rejection, RBAC behavior, unauthenticated request blocking, regression tests, migration rollback, Pint, and build all passed.
+- Defects found: None.
+- Notes: `npm run build` passes with optional `fontaine` warning. Cloud storage, preview generation, versioning, OCR, antivirus scanning, drag-and-drop upload, bulk upload, public API, deployment automation, and expense CRUD were not in scope or verified.
+
+v2 Sprint 3 documentation:
+- Documentation task: S3-V2-DOC-01.
+- Status: Completed.
+- Files updated: `README.md`, `CHANGELOG.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+- Documented: verified document metadata behavior, polymorphic attachment targets, expense attachment limitation, local Laravel Storage behavior, upload/download/delete baseline, validation rules, RBAC mapping, database impact, rollback/reapply evidence, QA PASS WITH NOTES verdict, test evidence, and known limitations.
+- Owner approval status: Sprint 3 result is not approved yet.
+
+v2 Sprint 3 review:
+- Sprint goal: Add a secure, testable document metadata and attachment foundation that can attach files to approved business records without building external storage or advanced document workflows.
+- Result: PASS WITH NOTES.
+- Completed tasks: S3-V2-PROG-01, S3-V2-PROG-02, S3-V2-PROG-03, S3-V2-QA-01, and S3-V2-DOC-01.
+- Deliverables: document metadata schema, polymorphic attachment relation, local upload/download/delete baseline, document panels on supported detail pages, RBAC-protected document actions, upload validation, feature/regression tests, and documentation updates.
+- Changed modules: document migration/model/service/controller/request, supported parent model relations and UI panels, document routes/RBAC permissions, document feature tests, README, CHANGELOG, DECISIONS, and project state.
+- QA result: PASS WITH NOTES.
+- Documentation status: Completed in commit `b4c00ae docs: document v2 sprint 3 attachments`.
+- Known limitations: document storage is local-only; no preview generation, public sharing, versioning, OCR, antivirus scanning, drag-and-drop upload, bulk upload, public API, deployment automation, expense CRUD, or recovery workflow for deleted files; payment attachment UI is embedded on invoice detail.
+- Owner approved result on 2026-08-01.
+
+v2 Sprint 4 plan:
+- Sprint title: Expense & Finance Enhancement.
+- Sprint goal: Add a controlled expense management foundation and enhance finance reporting so freelancers can track income, expenses, and net profit without changing existing invoice/payment rules.
+- Included scope: expense database/model/CRUD; expense category, date, amount, description, optional project link, and optional vendor/payee fields; document attachment support for expense records using the existing Sprint 3 document foundation; finance report enhancement for income, expenses, and net profit by date range; dashboard finance summary extension if it fits the one-day scope; route-level and UI RBAC protection; automated feature/regression tests; README/CHANGELOG/DECISIONS/PROJECT_STATE updates after QA.
+- Excluded scope: recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, payment gateway integration, external accounting integrations, public API, Docker, deployment automation, and advanced audit log hardening.
+- Deliverables: reversible migration for expenses; Expense model and relationships; controller/request/service following the approved architecture; Blade pages/forms for expense list/create/edit/show/delete; document panel integration for expense detail if expense show page exists; finance report calculations for income, expense total, and net profit; permission mapping for Admin and Finance manage access, Viewer read-only where approved, and Project Manager restrictions; feature/regression tests; documentation updates.
+- Programmer tasks: S4-V2-PROG-01 implement expense schema, model, CRUD, validation, and relationships; S4-V2-PROG-02 integrate expense documents and RBAC-protected UI/routes; S4-V2-PROG-03 enhance finance report/dashboard calculations and automated tests; S4-V2-PROG-04 fix QA defects only within approved Sprint 4 scope.
+- QA tasks: S4-V2-QA-01 verify migrations/rollback, expense CRUD, validation, document attachment to expenses, finance report calculations, RBAC behavior, regression flows, tests, Pint, and build.
+- Technical Writer tasks: S4-V2-DOC-01 update README/CHANGELOG/DECISIONS after QA PASS or PASS WITH NOTES with database impact, finance calculation rules, RBAC behavior, known limitations, and test evidence.
+- Dependencies: completed v2 Sprint 1 RBAC baseline; completed v2 Sprint 3 document attachment foundation; existing invoice/payment/report modules.
+- Risks: finance calculations can become misleading if income and expense date filters are not documented; expense attachment support depends on the Sprint 3 document relation staying stable; RBAC mapping must avoid giving Project Manager finance write access accidentally.
+- Acceptance criteria: migration is reversible; expenses can be created, viewed, updated, and deleted or soft-deleted according to implemented business rules; expense amount, date, category, and description are validated; expenses can optionally link to a project; expenses can have document attachments through the existing document foundation; finance report shows income total, expense total, and net profit for the selected date range; existing income report/export behavior does not regress; Admin can manage expenses; Finance can manage expenses and finance reports; Viewer has read-only access where permitted; Project Manager cannot perform unauthorized finance/expense writes; automated tests cover expense CRUD, validation, document relation, finance calculations, RBAC, and regression behavior; README/CHANGELOG/DECISIONS are updated after QA.
+- Definition of Done: Lincon completes only approved Sprint 4 implementation; automated tests pass or defects are fixed and retested; Nadella returns final QA verdict minimum PASS WITH NOTES; Sara updates documentation after QA; database impact, finance calculation rules, rollback behavior, and known limitations are recorded; Scofield sends Sprint Review for Owner result approval.

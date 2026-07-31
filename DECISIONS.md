@@ -1,5 +1,15 @@
 # Decisions
 
+## v2 Sprint 4 Expense & Finance Planning
+
+- v2 Sprint 4 is planned as Expense & Finance Enhancement after Owner approved the v2 Sprint 3 result on 2026-08-01.
+- Expense management should be implemented as a normal Laravel module within the existing modular monolith.
+- Expense business logic should stay outside controllers and use the approved Controller -> Service -> Model pattern unless query complexity justifies a Repository.
+- Expense documents should reuse the v2 Sprint 3 polymorphic document attachment foundation instead of introducing a separate attachment model.
+- Finance reporting should clearly separate income, expenses, and net profit for the selected date range.
+- Existing invoice/payment business rules and income export behavior must not be changed unless required by approved Sprint 4 scope.
+- v2 Sprint 4 excludes recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, external accounting integrations, public API, Docker, deployment automation, and advanced audit log hardening.
+
 ## Architecture Baseline
 
 - The application remains a modular monolith.
@@ -36,3 +46,20 @@
 - The activity timeline is not a full audit log and must not be treated as the future audit module.
 - Task workflow is intentionally limited to `Backlog`, `To Do`, `In Progress`, `Review`, `Done`, and `Cancelled`.
 - v2 Sprint 2 excludes drag-and-drop kanban, task attachments, document management, expense management, finance report enhancement, notifications, external storage, public API, mobile app, production deployment, and advanced workflow automation.
+
+## v2 Sprint 3 Document Attachment Baseline
+
+- Document management remains part of the modular monolith and uses first-party Laravel upload, validation, Storage, authorization, and Eloquent relationship patterns.
+- Document metadata is stored in a single `documents` table with a polymorphic `attachable` relation.
+- Verified attachment targets are Project, Project Task, Client, Invoice, and Payment.
+- Expense attachment is prepared only by the polymorphic relation design because the expense module is not implemented yet.
+- Uploaded files use Laravel's `local` disk and the `documents` directory.
+- Raw stored paths must not be exposed as public links; downloads go through authenticated controller routes.
+- Delete behavior removes both the document metadata and the local stored file.
+- Upload validation stays conservative: one required file, 5 MB maximum size, and allowed extensions `pdf`, `jpg`, `jpeg`, `png`, `webp`, `txt`, `csv`, `doc`, `docx`, `xls`, and `xlsx`.
+- RBAC combines general `documents.view`/`documents.manage` permissions with parent-record permission checks.
+- Admin can manage all documents through the current permission model.
+- Project Manager can manage documents attached to project, task, and client records.
+- Finance can manage invoice and payment documents only; project/task document writes remain blocked because Finance has no project workflow manage permission.
+- Viewer can read documents only where the parent record is readable and cannot upload or delete.
+- v2 Sprint 3 excludes cloud storage, preview generation, document versioning, OCR, antivirus scanning, public sharing, drag-and-drop upload, bulk upload, public API, Docker, deployment automation, and expense CRUD.

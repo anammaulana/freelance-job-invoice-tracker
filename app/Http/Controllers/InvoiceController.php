@@ -38,7 +38,11 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice): View
     {
-        $invoice->load(['project.client', 'payments' => fn ($query) => $query->latest('payment_date')]);
+        $invoice->load([
+            'documents' => fn ($query) => $query->with('uploadedBy')->latest(),
+            'project.client',
+            'payments' => fn ($query) => $query->with('documents.uploadedBy')->latest('payment_date'),
+        ]);
 
         return view('invoices.show', compact('invoice'));
     }

@@ -31,7 +31,10 @@ class ClientController extends Controller
 
     public function show(Client $client): View
     {
-        $client->load(['projects' => fn ($query) => $query->latest()]);
+        $client->load([
+            'documents' => fn ($query) => $query->with('uploadedBy')->latest(),
+            'projects' => fn ($query) => $query->latest(),
+        ]);
 
         return view('clients.show', compact('client'));
     }
