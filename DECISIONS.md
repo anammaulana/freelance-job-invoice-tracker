@@ -1,5 +1,15 @@
 # Decisions
 
+## v2 Sprint 4 Expense & Finance Planning
+
+- v2 Sprint 4 is planned as Expense & Finance Enhancement after Owner approved the v2 Sprint 3 result on 2026-08-01.
+- Expense management should be implemented as a normal Laravel module within the existing modular monolith.
+- Expense business logic should stay outside controllers and use the approved Controller -> Service -> Model pattern unless query complexity justifies a Repository.
+- Expense documents should reuse the v2 Sprint 3 polymorphic document attachment foundation instead of introducing a separate attachment model.
+- Finance reporting should clearly separate income, expenses, and net profit for the selected date range.
+- Existing invoice/payment business rules and income export behavior must not be changed unless required by approved Sprint 4 scope.
+- v2 Sprint 4 excludes recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, external accounting integrations, public API, Docker, deployment automation, and advanced audit log hardening.
+
 ## Architecture Baseline
 
 - The application remains a modular monolith.

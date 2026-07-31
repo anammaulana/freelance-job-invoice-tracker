@@ -1,5 +1,11 @@
 # Changelog
 
+## v2 Sprint 4 - Expense & Finance Enhancement
+
+- Planned next approved-gate sprint for expense management and finance report enhancement after Owner approved v2 Sprint 3 result.
+- Proposed scope includes expense CRUD, optional project relation, expense document attachment using the existing document foundation, income/expense/net profit reporting, RBAC protection, automated tests, and documentation updates.
+- Proposed exclusions include recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, external accounting integrations, public API, Docker, deployment automation, and advanced audit log hardening.
+
 ## v2 Sprint 3 - Document & Attachment Foundation
 
 - Added verified document metadata documentation for original filename, stored path, disk, MIME type, size, uploaded-by user, timestamps, and polymorphic attachment target.
