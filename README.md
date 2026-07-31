@@ -1,6 +1,6 @@
 # Freelance Job & Invoice Tracker
 
-Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, and income reports. This README documents verified behavior through Sprint 3.
+Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, and v2 role-based access control. This README documents verified behavior through v2 Sprint 1.
 
 ## Tech Stack
 
@@ -89,6 +89,23 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Password: `password`
 
 ## Verified Features
+
+### v2 Sprint 1
+
+- Architecture baseline documented in `DECISIONS.md`.
+- Flexible RBAC foundation using database-backed roles and permissions.
+- Seeded roles:
+  - `Admin`
+  - `Finance`
+  - `Project Manager`
+  - `Viewer`
+- Demo account is assigned the `Admin` role during seeding.
+- Existing stable modules are protected by permission middleware.
+- Admin can access existing stable modules.
+- Viewer can view allowed modules but cannot create, update, or delete.
+- Finance can access dashboard, invoice, payment, income report, and report export areas.
+- Project Manager can access dashboard, client, and project areas.
+- Blade navigation and action buttons follow backend permissions.
 
 ### Sprint 1
 
@@ -206,6 +223,13 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 
 ## Database Impact
 
+v2 Sprint 1 adds these RBAC tables:
+
+- `roles`: stores role names and slugs.
+- `permissions`: stores permission names and slugs.
+- `permission_role`: stores role-permission assignments.
+- `role_user`: stores user-role assignments.
+
 Sprint 1 adds these application tables:
 
 - `clients`: stores freelancer client contact and company information.
@@ -218,9 +242,18 @@ Sprint 2 adds these application tables:
 
 Sprint 3 adds no new database tables or external package dependencies.
 
+v2 Sprint 1 adds no external package dependencies.
+
+## RBAC Mapping
+
+- Admin: all current permissions.
+- Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, report view/export.
+- Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete.
+- Viewer: `dashboard.view`, `clients.view`, `projects.view`, `invoices.view`, `reports.view`.
+
 ## Test Report
 
-Final verified command results after Sprint 3:
+Final verified command results after v2 Sprint 1:
 
 ```bash
 php artisan migrate:fresh --seed --no-interaction
@@ -228,11 +261,13 @@ php artisan migrate:fresh --seed --no-interaction
 
 Result: passed.
 
+RBAC migration rollback check: passed.
+
 ```bash
 php artisan test
 ```
 
-Result after Sprint 3 Excel export revision: passed with `27 tests, 166 assertions`.
+Result after v2 Sprint 1: passed with 33 tests and 225 assertions.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -246,14 +281,15 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict after Sprint 3 Excel export revision: `PASS`.
+QA verdict after v2 Sprint 1: PASS WITH NOTES.
 
 Defects found: none.
 
 ## Known Limitations
 
 - Excel export now generates a fuller `.xlsx` OpenXML package with workbook metadata, styles, worksheet dimension, XML validation coverage, and worksheet content checks.
-- The application uses a single Admin/Freelancer role only.
+- RBAC is implemented for current Blade modules only.
+- Audit logs and advanced role-management UI are not included.
 - Public API is not included.
 - Docker support is not included.
 - Production deployment automation is not included.

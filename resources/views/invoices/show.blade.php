@@ -6,13 +6,19 @@
             <p class="mt-1 text-sm text-zinc-600">Project: {{ $invoice->project->name }}</p>
         </div>
         <div class="flex flex-wrap gap-2">
-            <a href="{{ route('invoices.payments.create', $invoice) }}" class="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">Record payment</a>
-            <a href="{{ route('invoices.edit', $invoice) }}" class="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100">Edit</a>
-            <form action="{{ route('invoices.destroy', $invoice) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500">Delete</button>
-            </form>
+            @can('payments.create')
+                <a href="{{ route('invoices.payments.create', $invoice) }}" class="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">Record payment</a>
+            @endcan
+            @can('invoices.update')
+                <a href="{{ route('invoices.edit', $invoice) }}" class="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100">Edit</a>
+            @endcan
+            @can('invoices.delete')
+                <form action="{{ route('invoices.destroy', $invoice) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500">Delete</button>
+                </form>
+            @endcan
         </div>
     </div>
 
@@ -31,7 +37,9 @@
     <section class="mt-8">
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold text-zinc-950">Payments</h2>
-            <a href="{{ route('invoices.payments.create', $invoice) }}" class="text-sm font-medium text-zinc-950 hover:underline">Record payment</a>
+            @can('payments.create')
+                <a href="{{ route('invoices.payments.create', $invoice) }}" class="text-sm font-medium text-zinc-950 hover:underline">Record payment</a>
+            @endcan
         </div>
 
         @if ($invoice->payments->isEmpty())
@@ -58,12 +66,16 @@
                                     <td class="px-4 py-3 text-zinc-700">{{ $payment->reference ?: '-' }}</td>
                                     <td class="px-4 py-3 text-right">
                                         <div class="flex justify-end gap-3">
-                                            <a href="{{ route('invoices.payments.edit', [$invoice, $payment]) }}" class="font-medium text-zinc-950 hover:underline">Edit</a>
-                                            <form action="{{ route('invoices.payments.destroy', [$invoice, $payment]) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="font-medium text-red-600 hover:underline">Delete</button>
-                                            </form>
+                                            @can('payments.update')
+                                                <a href="{{ route('invoices.payments.edit', [$invoice, $payment]) }}" class="font-medium text-zinc-950 hover:underline">Edit</a>
+                                            @endcan
+                                            @can('payments.delete')
+                                                <form action="{{ route('invoices.payments.destroy', [$invoice, $payment]) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="font-medium text-red-600 hover:underline">Delete</button>
+                                                </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

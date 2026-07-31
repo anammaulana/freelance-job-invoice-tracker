@@ -44,7 +44,11 @@
                                 @foreach ($overdue_invoices as $invoice)
                                     <tr>
                                         <td class="px-4 py-3 font-medium text-zinc-950">
-                                            <a href="{{ route('invoices.show', $invoice) }}" class="hover:underline">{{ $invoice->invoice_number }}</a>
+                                            @can('invoices.view')
+                                                <a href="{{ route('invoices.show', $invoice) }}" class="hover:underline">{{ $invoice->invoice_number }}</a>
+                                            @else
+                                                {{ $invoice->invoice_number }}
+                                            @endcan
                                         </td>
                                         <td class="px-4 py-3 text-zinc-700">{{ $invoice->project->client->name }}</td>
                                         <td class="px-4 py-3 text-zinc-700">{{ $invoice->due_date->format('Y-m-d') }}</td>

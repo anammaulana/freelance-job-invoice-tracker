@@ -8,7 +8,9 @@
         <div class="rounded-lg border border-dashed border-zinc-300 bg-white p-8 text-center">
             <h2 class="text-base font-medium text-zinc-950">Client belum tersedia</h2>
             <p class="mt-2 text-sm text-zinc-600">Tambahkan client sebelum membuat project.</p>
-            <a href="{{ route('clients.create') }}" class="mt-4 inline-flex rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">New client</a>
+            @can('clients.create')
+                <a href="{{ route('clients.create') }}" class="mt-4 inline-flex rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">New client</a>
+            @endcan
         </div>
     @else
         <form action="{{ route('projects.store') }}" method="POST" class="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">

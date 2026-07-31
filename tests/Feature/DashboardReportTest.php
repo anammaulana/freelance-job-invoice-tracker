@@ -17,7 +17,7 @@ class DashboardReportTest extends TestCase
 
     public function test_dashboard_shows_metrics_overdue_invoices_and_five_latest_payments(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $clients = Client::factory()->count(2)->create();
         $activeProject = Project::factory()->for($clients[0])->create([
             'name' => 'Active Build',
@@ -74,7 +74,7 @@ class DashboardReportTest extends TestCase
 
     public function test_income_report_filters_by_payment_date_and_groups_invoice_statuses(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create(['name' => 'Acme Studio']);
         $project = Project::factory()->for($client)->create(['name' => 'Brand Refresh']);
         $sentInvoice = Invoice::factory()->for($project)->create([
@@ -115,7 +115,7 @@ class DashboardReportTest extends TestCase
 
     public function test_income_report_export_downloads_valid_xlsx_file(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create(['name' => 'Export & Client']);
         $project = Project::factory()->for($client)->create(['name' => 'Export Project']);
         $invoice = Invoice::factory()->for($project)->create([

@@ -16,7 +16,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_authenticated_user_can_create_list_view_update_and_delete_invoice(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $project = Project::factory()->for(Client::factory())->create([
             'name' => 'Website Build',
             'project_value' => '10000.00',
@@ -69,7 +69,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_invoice_numbers_are_unique_and_sequential_per_month(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $project = Project::factory()->for(Client::factory())->create(['project_value' => '10000.00']);
 
         foreach (['1000.00', '1500.00'] as $amount) {
@@ -88,7 +88,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_project_invoice_total_cannot_exceed_project_value(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $project = Project::factory()->for(Client::factory())->create(['project_value' => '3000.00']);
 
         Invoice::factory()->for($project)->create([
@@ -107,7 +107,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_invoice_create_requires_valid_project_and_dates(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $this->actingAs($user)->post(route('invoices.store'), [
             'project_id' => 999,
@@ -120,7 +120,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_multiple_payments_can_be_recorded_and_set_partial_then_paid_status(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $invoice = Invoice::factory()->for(Project::factory()->for(Client::factory()))->create([
             'amount' => '1000.00',
             'status' => Invoice::STATUS_SENT,
@@ -153,7 +153,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_total_payments_cannot_exceed_invoice_amount(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $invoice = Invoice::factory()->for(Project::factory()->for(Client::factory()))->create(['amount' => '1000.00']);
 
         Payment::factory()->for($invoice)->create(['amount' => '900.00']);
@@ -166,7 +166,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_authenticated_user_can_update_and_delete_payment(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $invoice = Invoice::factory()->for(Project::factory()->for(Client::factory()))->create([
             'amount' => '1000.00',
             'status' => Invoice::STATUS_SENT,
@@ -197,7 +197,7 @@ class InvoicePaymentTest extends TestCase
 
     public function test_payment_form_requires_payment_date_and_amount(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $invoice = Invoice::factory()->for(Project::factory()->for(Client::factory()))->create();
 
         $this->actingAs($user)->post(route('invoices.payments.store', $invoice), [

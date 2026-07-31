@@ -14,7 +14,7 @@ class ProjectCrudTest extends TestCase
 
     public function test_authenticated_user_can_create_list_view_update_and_delete_project(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create(['name' => 'Acme Client']);
 
         $createResponse = $this->actingAs($user)->post(route('projects.store'), [
@@ -63,7 +63,7 @@ class ProjectCrudTest extends TestCase
 
     public function test_project_status_must_be_limited_to_approved_values(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create();
 
         $this->actingAs($user)->post(route('projects.store'), [
@@ -79,7 +79,7 @@ class ProjectCrudTest extends TestCase
 
     public function test_project_deadline_cannot_be_earlier_than_start_date(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create();
 
         $this->actingAs($user)->post(route('projects.store'), [
@@ -95,7 +95,7 @@ class ProjectCrudTest extends TestCase
 
     public function test_project_create_requires_description(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create();
 
         $this->actingAs($user)->post(route('projects.store'), [
@@ -110,7 +110,7 @@ class ProjectCrudTest extends TestCase
 
     public function test_project_update_requires_description(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create();
         $project = Project::factory()->for($client)->create();
 
