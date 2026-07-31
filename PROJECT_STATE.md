@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 3 - Document & Attachment Foundation
 
-Current status: QA
+Current status: DOCUMENTATION - REVIEW READY
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -18,7 +18,7 @@ Completed sprints:
 - v2 Sprint 2: Project workflow foundation.
 
 Pending sprints:
-- v2 Sprint 3: Document and attachment foundation implementation completed by Lincon; QA verification is in progress on `feature/v2-sprint-3-documents-attachments`.
+- v2 Sprint 3: Document and attachment foundation implementation, QA, and documentation are complete on `feature/v2-sprint-3-documents-attachments`; Sprint Review is ready for Scofield preparation and Owner approval.
 - v2 future sprints: expenses/finance enhancement, audit log hardening, documentation hardening.
 
 Approved constraints:
@@ -104,9 +104,12 @@ Decisions:
 - 2026-08-01: v2 Sprint 3 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-08-01: v2 Sprint 3 feature branch created: `feature/v2-sprint-3-documents-attachments`.
 - 2026-08-01: v2 Sprint 3 implementation completed by Lincon in commit `5ba8692 feat: add document attachment foundation`; Sprint 3 moved to QA verification.
+- 2026-08-01: v2 Sprint 3 QA completed by Nadella with verdict `PASS WITH NOTES`.
+- 2026-08-01: v2 Sprint 3 documentation completed by Sara; Sprint Review is ready for Scofield preparation.
 
 Open issues:
-- v2 Sprint 3 QA verification is in progress.
+- No blocking open issues for v2 Sprint 3 documentation handoff.
+- QA note remains: `npm run build` passes with optional `fontaine` warning; advanced document workflows were not in scope or verified.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -119,7 +122,7 @@ Known risks:
 
 Last Owner approval: 2026-08-01 - v2 Sprint 3 plan approved.
 
-Next required Owner action: Wait for v2 Sprint 3 QA, documentation, and Sprint Review.
+Next required Owner action: Wait for Scofield to prepare the v2 Sprint 3 Review, then approve or request revision of the Sprint result.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -415,3 +418,18 @@ v2 Sprint 3 implementation handoff:
 - RBAC behavior: Admin has full document access; Project Manager manages project/task/client-related documents; Viewer has read-only access where parent record is permitted; Finance manages invoice/payment documents and is blocked from unauthorized project/task document access or writes.
 - Programmer verification: `php artisan migrate:fresh --seed --no-interaction` PASS; `php artisan migrate:rollback --step=1 --no-interaction` PASS; `php artisan migrate --no-interaction` PASS; `php artisan test` PASS with 47 tests and 310 assertions; `.\\vendor\\bin\\pint --test` PASS; `npm run build` PASS with existing optional `fontaine` warning.
 - Known limitations: no preview generation, public sharing, versioning, OCR, antivirus, bulk upload, or drag-and-drop; payment attachment UI is embedded on invoice detail; file deletion removes local file and metadata without recovery workflow.
+
+v2 Sprint 3 QA result:
+- QA task: S3-V2-QA-01.
+- Verdict: PASS WITH NOTES.
+- Commands passed: `php artisan migrate:fresh --seed --no-interaction`, rollback/reapply verification with `php artisan migrate:rollback --step=1 --no-interaction` and `php artisan migrate --no-interaction`, `php artisan test` with 47 tests and 310 assertions, `.\\vendor\\bin\\pint --test`, and `npm run build`.
+- Acceptance criteria result: document metadata, polymorphic attachment relation, project/task/client/invoice/payment attachment targets, local storage behavior, upload/download/delete baseline, unsupported MIME rejection, max-size rejection, RBAC behavior, unauthenticated request blocking, regression tests, migration rollback, Pint, and build all passed.
+- Defects found: None.
+- Notes: `npm run build` passes with optional `fontaine` warning. Cloud storage, preview generation, versioning, OCR, antivirus scanning, drag-and-drop upload, bulk upload, public API, deployment automation, and expense CRUD were not in scope or verified.
+
+v2 Sprint 3 documentation:
+- Documentation task: S3-V2-DOC-01.
+- Status: Completed.
+- Files updated: `README.md`, `CHANGELOG.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+- Documented: verified document metadata behavior, polymorphic attachment targets, expense attachment limitation, local Laravel Storage behavior, upload/download/delete baseline, validation rules, RBAC mapping, database impact, rollback/reapply evidence, QA PASS WITH NOTES verdict, test evidence, and known limitations.
+- Owner approval status: Sprint 3 result is not approved yet.

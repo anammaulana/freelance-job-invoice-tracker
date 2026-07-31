@@ -1,6 +1,6 @@
 # Freelance Job & Invoice Tracker
 
-Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, v2 role-based access control, and v2 project workflow foundation. This README documents verified behavior through v2 Sprint 2.
+Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, v2 role-based access control, v2 project workflow foundation, and v2 document attachment foundation. This README documents verified behavior through v2 Sprint 3.
 
 ## Tech Stack
 
@@ -134,6 +134,38 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Admin and Project Manager can manage project workflow data.
 - Viewer can read project workflow data but cannot create, update, or delete it.
 - Finance is blocked from project workflow access and writes under the current permission mapping.
+
+### v2 Sprint 3
+
+- Document metadata and polymorphic attachment foundation.
+- Supported attachment targets:
+  - Project;
+  - Project Task;
+  - Client;
+  - Invoice;
+  - Payment.
+- Expense attachment is prepared by the polymorphic design only. No expense module, expense CRUD, or expense document UI is implemented.
+- Document metadata stores original filename, stored path, storage disk, MIME type, file size, uploaded-by user, timestamps, and attachable target.
+- Uploaded files use Laravel local Storage disk under the `documents` directory.
+- Downloads go through authenticated controller routes instead of exposing raw filesystem paths.
+- Delete removes the document metadata and the stored local file.
+- Upload validation rejects unsupported file types and files larger than 5 MB.
+- Allowed upload extensions:
+  - `pdf`
+  - `jpg`
+  - `jpeg`
+  - `png`
+  - `webp`
+  - `txt`
+  - `csv`
+  - `doc`
+  - `docx`
+  - `xls`
+  - `xlsx`
+- Admin can manage documents.
+- Project Manager can manage project, task, and client-related documents.
+- Viewer has read-only document access where the parent record is permitted.
+- Finance can manage invoice and payment documents, and is blocked from unauthorized project/task document writes.
 
 ### Sprint 1
 
@@ -271,6 +303,20 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
   - partial payment sets status to `Partial`;
   - full payment sets status to `Paid`.
 
+### Documents
+
+- A document must be attached to one supported parent record.
+- Supported implemented parent records are Project, Project Task, Client, Invoice, and Payment.
+- Expense attachment is not implemented as a UI or CRUD flow in v2 Sprint 3.
+- `document` upload is required when creating a document attachment.
+- Maximum upload size is 5 MB.
+- Allowed upload extensions are `pdf`, `jpg`, `jpeg`, `png`, `webp`, `txt`, `csv`, `doc`, `docx`, `xls`, and `xlsx`.
+- Documents are stored on Laravel's `local` disk under the `documents` directory.
+- Stored file paths are not exposed as public links.
+- Download requires authenticated access and parent-record read permission.
+- Delete requires authenticated access and parent-record write permission.
+- Deleting a document removes both metadata and the local stored file.
+
 ## Dashboard And Report Behavior
 
 - `/dashboard` is available only after login.
@@ -298,6 +344,12 @@ v2 Sprint 2 updates project workflow storage:
 - `project_tasks`: stores task title, optional milestone link, optional assignee, priority, optional due date, optional description, progress, status, timestamps, and soft delete state.
 - `project_activities`: stores lightweight project workflow timeline events for milestone/task create, update, and delete actions.
 
+v2 Sprint 3 adds document attachment storage:
+
+- `documents`: stores polymorphic `attachable_type` and `attachable_id`, uploaded-by user, original filename, stored path, disk, MIME type, size, and timestamps.
+- `documents.uploaded_by_user_id` references `users` and restricts deleting a user while uploaded documents reference that user.
+- The migration rollback and reapply flow was verified by QA.
+
 Sprint 1 adds these application tables:
 
 - `clients`: stores freelancer client contact and company information.
@@ -315,14 +367,14 @@ v2 Sprint 1 adds no external package dependencies.
 ## RBAC Mapping
 
 - Admin: all current permissions.
-- Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, report view/export.
-- Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete, project workflow view/manage.
-- Viewer: `dashboard.view`, `clients.view`, `projects.view`, project workflow view, `invoices.view`, `reports.view`.
-- Finance: no project workflow view/manage permission in the current mapping.
+- Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, document view/manage, report view/export. Document write access is limited by parent record rules to invoice and payment documents.
+- Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete, project workflow view/manage, document view/manage. Document write access applies to project, task, and client-related documents.
+- Viewer: `dashboard.view`, `clients.view`, `projects.view`, project workflow view, `invoices.view`, document view, `reports.view`. Viewer can download documents only where the parent record is readable and cannot upload or delete.
+- Finance: no project workflow view/manage permission in the current mapping, so Finance is blocked from project/task document writes.
 
 ## Test Report
 
-Final verified command results after v2 Sprint 2:
+Final verified command results after v2 Sprint 3:
 
 ```bash
 php artisan migrate:fresh --seed --no-interaction
@@ -334,11 +386,13 @@ RBAC migration rollback check: passed.
 
 Project workflow migration rollback check: passed.
 
+Document attachment migration rollback and reapply check: passed.
+
 ```bash
 php artisan test
 ```
 
-Result after v2 Sprint 2: passed with 40 tests and 272 assertions.
+Result after v2 Sprint 3: passed with 47 tests and 310 assertions.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -352,9 +406,11 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict after v2 Sprint 2: PASS.
+QA verdict after v2 Sprint 3: PASS WITH NOTES.
 
 Defects found: none.
+
+QA note: document attachment behavior was verified through automated and route-level checks; no cloud storage, preview generation, antivirus scanning, or advanced document workflow was verified.
 
 ## Known Limitations
 
@@ -362,9 +418,14 @@ Defects found: none.
 - RBAC is implemented for current Blade modules only.
 - Project workflow is a baseline CRUD and progress calculation implementation.
 - Project activity timeline is lightweight workflow history only, not a full audit log.
+- Document attachment is a baseline upload/download/delete implementation only.
+- Documents use Laravel local storage only.
+- File delete removes metadata and the local stored file without a recovery workflow.
+- Payment attachment UI is embedded on the invoice detail page.
+- Expense attachment is prepared only through the polymorphic database design; expense CRUD and expense document UI are not implemented.
+- Preview generation, document versioning, OCR, antivirus scanning, public sharing links, drag-and-drop upload, and bulk upload are not included.
 - Drag-and-drop kanban is not included.
-- Task attachment upload and document management are not included.
-- Expense management and finance report enhancement are not included in v2 Sprint 2.
+- Expense management and finance report enhancement are not included in v2 Sprint 3.
 - Notifications, external storage, public API, mobile app, and advanced workflow automation are not included.
 - Audit logs and advanced role-management UI are not included.
 - Public API is not included.

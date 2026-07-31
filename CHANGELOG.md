@@ -1,5 +1,18 @@
 # Changelog
 
+## v2 Sprint 3 - Document & Attachment Foundation
+
+- Added verified document metadata documentation for original filename, stored path, disk, MIME type, size, uploaded-by user, timestamps, and polymorphic attachment target.
+- Documented supported attachment targets: Project, Project Task, Client, Invoice, and Payment.
+- Documented that expense attachment is prepared only through the polymorphic design; no expense module, expense CRUD, or expense document UI is implemented.
+- Documented Laravel local Storage disk behavior under the `documents` directory.
+- Documented upload, download, and delete baseline behavior, including controller-based downloads and local file deletion.
+- Documented upload validation: required file, 5 MB maximum size, and allowed extensions `pdf`, `jpg`, `jpeg`, `png`, `webp`, `txt`, `csv`, `doc`, `docx`, `xls`, and `xlsx`.
+- Documented RBAC behavior: Admin full document access, Project Manager project/task/client document management, Viewer read-only parent-permitted access, and Finance invoice/payment document management only.
+- Documented database impact for the `documents` table and verified rollback/reapply evidence.
+- Documented QA PASS WITH NOTES evidence: `php artisan migrate:fresh --seed --no-interaction` passed, document migration rollback/reapply passed, `php artisan test` passed with 47 tests and 310 assertions, Pint passed, and `npm run build` passed with optional `fontaine` warning.
+- Added known limitations for local-only storage, no preview/versioning/OCR/antivirus/public sharing/drag-and-drop/bulk upload, and no expense CRUD.
+
 ## v2 Sprint 2 - Project Workflow Foundation
 
 - Added verified milestone CRUD baseline documentation for title, target date, weight, description, progress, and soft delete behavior.
