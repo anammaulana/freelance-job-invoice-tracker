@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 1 - Architecture Baseline and RBAC Foundation
 
-Current status: IN_PROGRESS
+Current status: QA
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -78,6 +78,7 @@ Decisions:
 - 2026-07-31: Sprint 1 result approved by Owner via `APPROVE RESULT` with requirement change: replace CSV export with Excel export.
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: Owner requested Sprint 2 revision via `REVISION RESULT`; remaining QA note must be resolved before result approval.
+- 2026-07-31: v2 Sprint 1 implementation completed locally; pending independent QA verification because native specialist subagent tooling was unavailable in this session.
 - 2026-07-31: Sprint 2 result approved by Owner via `APPROVE RESULT`.
 - 2026-07-31: Sprint 3 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: Owner requested Sprint 3 revision via `REVISION RESULT` because Excel export still errored.
@@ -272,3 +273,11 @@ Sprint 1 review:
 - Documentation status: Completed.
 - Known limitations: invoice, payment, dashboard, reports/CSV, Docker, API, and multi-role authorization are not implemented in Sprint 1.
 - Owner approval required before marking Sprint 1 complete and preparing Sprint 2 plan.
+
+v2 Sprint 1 implementation handoff:
+- Tasks: S1-V2-PROG-01, S1-V2-PROG-02, S1-V2-PROG-03.
+- Implemented scope: architecture baseline documents, database-backed roles and permissions, seeded Admin/Finance/Project Manager/Viewer roles, seeded permissions, demo Admin assignment, permission middleware, Gate integration, route-level authorization, permission-aware Blade navigation/actions, and RBAC feature tests.
+- RBAC mapping: Admin all current permissions; Finance dashboard/invoices/payments/reports/export; Project Manager dashboard/clients/projects; Viewer dashboard/clients/projects/invoices/reports read-only.
+- Verification: `php artisan migrate:fresh --seed --no-interaction` passed; `php artisan test` passed with 33 tests and 225 assertions; `.\\vendor\\bin\\pint --test` passed after formatting; `npm run build` passed with optional `fontaine` notice.
+- Known limitations: RBAC management UI, audit log, future v2 project workflow, documents, expenses, public API, Docker, and production deployment are outside v2 Sprint 1.
+- QA status: pending independent QA agent verification; native subagent tooling was unavailable during this implementation session.

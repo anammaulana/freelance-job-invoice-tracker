@@ -18,13 +18,35 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)
+        ->middleware('permission:dashboard.view')
+        ->name('dashboard');
     Route::redirect('/home', '/dashboard')->name('home');
-    Route::get('/reports/income', [ReportController::class, 'income'])->name('reports.income');
-    Route::get('/reports/income/export', [ReportController::class, 'exportIncome'])->name('reports.income.export');
+    Route::get('/reports/income', [ReportController::class, 'income'])
+        ->middleware('permission:reports.view')
+        ->name('reports.income');
+    Route::get('/reports/income/export', [ReportController::class, 'exportIncome'])
+        ->middleware('permission:reports.export')
+        ->name('reports.income.export');
 
-    Route::resource('clients', ClientController::class);
-    Route::resource('projects', ProjectController::class);
-    Route::resource('invoices', InvoiceController::class);
-    Route::resource('invoices.payments', PaymentController::class)->except(['index', 'show']);
+    Route::resource('clients', ClientController::class)
+        ->middlewareFor(['index', 'show'], 'permission:clients.view')
+        ->middlewareFor(['create', 'store'], 'permission:clients.create')
+        ->middlewareFor(['edit', 'update'], 'permission:clients.update')
+        ->middlewareFor(['destroy'], 'permission:clients.delete');
+    Route::resource('projects', ProjectController::class)
+        ->middlewareFor(['index', 'show'], 'permission:projects.view')
+        ->middlewareFor(['create', 'store'], 'permission:projects.create')
+        ->middlewareFor(['edit', 'update'], 'permission:projects.update')
+        ->middlewareFor(['destroy'], 'permission:projects.delete');
+    Route::resource('invoices', InvoiceController::class)
+        ->middlewareFor(['index', 'show'], 'permission:invoices.view')
+        ->middlewareFor(['create', 'store'], 'permission:invoices.create')
+        ->middlewareFor(['edit', 'update'], 'permission:invoices.update')
+        ->middlewareFor(['destroy'], 'permission:invoices.delete');
+    Route::resource('invoices.payments', PaymentController::class)
+        ->except(['index', 'show'])
+        ->middlewareFor(['create', 'store'], 'permission:payments.create')
+        ->middlewareFor(['edit', 'update'], 'permission:payments.update')
+        ->middlewareFor(['destroy'], 'permission:payments.delete');
 });

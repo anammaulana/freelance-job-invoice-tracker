@@ -14,11 +14,21 @@
             </a>
             @auth
                 <nav class="flex items-center gap-2 text-sm">
-                    <a href="{{ route('dashboard') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('dashboard') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Dashboard</a>
-                    <a href="{{ route('clients.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('clients.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Clients</a>
-                    <a href="{{ route('projects.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('projects.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Projects</a>
-                    <a href="{{ route('invoices.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('invoices.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Invoices</a>
-                    <a href="{{ route('reports.income') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('reports.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Reports</a>
+                    @can('dashboard.view')
+                        <a href="{{ route('dashboard') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('dashboard') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Dashboard</a>
+                    @endcan
+                    @can('clients.view')
+                        <a href="{{ route('clients.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('clients.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Clients</a>
+                    @endcan
+                    @can('projects.view')
+                        <a href="{{ route('projects.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('projects.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Projects</a>
+                    @endcan
+                    @can('invoices.view')
+                        <a href="{{ route('invoices.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('invoices.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Invoices</a>
+                    @endcan
+                    @can('reports.view')
+                        <a href="{{ route('reports.income') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('reports.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Reports</a>
+                    @endcan
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button class="rounded-md px-3 py-2 text-zinc-700 hover:bg-zinc-100">Logout</button>

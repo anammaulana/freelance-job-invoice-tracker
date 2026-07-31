@@ -14,7 +14,7 @@ class ClientCrudTest extends TestCase
 
     public function test_authenticated_user_can_create_list_view_update_and_delete_client(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $createResponse = $this->actingAs($user)->post(route('clients.store'), [
             'name' => 'Acme Client',
@@ -56,7 +56,7 @@ class ClientCrudTest extends TestCase
 
     public function test_client_create_requires_approved_fields(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
 
         $this->actingAs($user)->post(route('clients.store'), [
             'name' => '',
@@ -72,7 +72,7 @@ class ClientCrudTest extends TestCase
 
     public function test_client_update_requires_approved_fields(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create();
 
         $this->actingAs($user)->put(route('clients.update', $client), [
@@ -91,7 +91,7 @@ class ClientCrudTest extends TestCase
 
     public function test_client_cannot_be_deleted_when_it_has_active_project(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $client = Client::factory()->create();
         Project::factory()->for($client)->create(['status' => Project::STATUS_ACTIVE]);
 

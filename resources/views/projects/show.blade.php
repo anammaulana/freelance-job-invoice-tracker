@@ -6,12 +6,16 @@
             <p class="mt-1 text-sm text-zinc-600">Client: {{ $project->client->name }}</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('projects.edit', $project) }}" class="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100">Edit</a>
-            <form action="{{ route('projects.destroy', $project) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500">Delete</button>
-            </form>
+            @can('projects.update')
+                <a href="{{ route('projects.edit', $project) }}" class="rounded-md border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100">Edit</a>
+            @endcan
+            @can('projects.delete')
+                <form action="{{ route('projects.destroy', $project) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500">Delete</button>
+                </form>
+            @endcan
         </div>
     </div>
 

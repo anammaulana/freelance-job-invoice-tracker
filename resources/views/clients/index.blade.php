@@ -4,7 +4,9 @@
             <h1 class="text-2xl font-semibold text-zinc-950">Clients</h1>
             <p class="mt-1 text-sm text-zinc-600">Kelola data client freelancer.</p>
         </div>
-        <a href="{{ route('clients.create') }}" class="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">New client</a>
+        @can('clients.create')
+            <a href="{{ route('clients.create') }}" class="inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">New client</a>
+        @endcan
     </div>
 
     @if ($clients->isEmpty())

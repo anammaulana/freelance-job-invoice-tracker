@@ -8,7 +8,9 @@
         <div class="rounded-lg border border-dashed border-zinc-300 bg-white p-8 text-center">
             <h2 class="text-base font-medium text-zinc-950">Project belum tersedia</h2>
             <p class="mt-2 text-sm text-zinc-600">Tambahkan project sebelum membuat invoice.</p>
-            <a href="{{ route('projects.create') }}" class="mt-4 inline-flex rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">New project</a>
+            @can('projects.create')
+                <a href="{{ route('projects.create') }}" class="mt-4 inline-flex rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700">New project</a>
+            @endcan
         </div>
     @else
         <form action="{{ route('invoices.store') }}" method="POST" class="rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">

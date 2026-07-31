@@ -17,10 +17,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Demo Freelancer',
+        User::updateOrCreate([
             'email' => 'demo@example.com',
+        ], [
+            'name' => 'Demo Freelancer',
             'password' => 'password',
         ]);
+
+        $this->call(RbacSeeder::class);
     }
 }
