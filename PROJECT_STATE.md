@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 5 - Audit Log Hardening
 
-Current status: IN PROGRESS
+Current status: QA
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -20,7 +20,7 @@ Completed sprints:
 - v2 Sprint 4: Expense and finance enhancement.
 
 Pending sprints:
-- v2 Sprint 5: Audit log hardening implementation approved and assigned to Lincon on `feature/v2-sprint-5-audit-log-hardening`.
+- v2 Sprint 5: Audit log hardening implemented by Lincon and moved to QA verification.
 - v2 future sprints: documentation hardening.
 
 Approved constraints:
@@ -119,9 +119,10 @@ Decisions:
 - 2026-08-01: v2 Sprint 5 plan prepared for Audit Log Hardening; waiting for Owner sprint approval.
 - 2026-08-01: v2 Sprint 5 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-08-01: v2 Sprint 5 feature branch created: `feature/v2-sprint-5-audit-log-hardening`.
+- 2026-08-01: v2 Sprint 5 implementation completed by Lincon in commit `6cca713 feat: add v2 sprint 5 audit logging`; Sprint 5 moved to QA verification.
 
 Open issues:
-- No blocking open issues for v2 Sprint 5 implementation handoff.
+- No blocking open issues for v2 Sprint 5 QA handoff.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
 
@@ -140,7 +141,7 @@ Known risks:
 
 Last Owner approval: 2026-08-01 - v2 Sprint 5 plan approved.
 
-Next required Owner action: Wait for v2 Sprint 5 implementation handoff, QA, documentation, and Sprint Review.
+Next required Owner action: Wait for v2 Sprint 5 QA, documentation, and Sprint Review.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -517,3 +518,13 @@ v2 Sprint 5 plan:
 - Risks: audit logging can become noisy if every field change is logged without summarization; sensitive payloads must be excluded; integration across many modules may exceed a one-day sprint if scope is not kept to important create/update/delete actions.
 - Acceptance criteria: migration is reversible; audit logs capture actor, action, target type/id, timestamp, and safe summarized changes; important create/update/delete/soft-delete actions are logged for clients, projects, invoices, payments, expenses, documents, milestones, and tasks; audit records are read-only through the application; Admin can view audit logs; non-authorized roles cannot view audit logs; permitted role access does not expose unauthorized module details; logs do not store passwords, tokens, uploaded file contents, or full sensitive payloads; existing module behavior does not regress; automated tests cover log creation, authorization, read-only behavior, sensitive data exclusion, and regression behavior; README/CHANGELOG/DECISIONS are updated after QA.
 - Definition of Done: Lincon completes only approved Sprint 5 implementation; automated tests pass or defects are fixed and retested; Nadella returns final QA verdict minimum PASS WITH NOTES; Sara updates documentation after QA; database impact, audit coverage, sensitive data exclusions, rollback behavior, and known limitations are recorded; Scofield sends Sprint Review for Owner result approval.
+
+v2 Sprint 5 implementation handoff:
+- Programmer task: S5-V2-PROG-01, S5-V2-PROG-02, S5-V2-PROG-03.
+- Commit: `6cca713 feat: add v2 sprint 5 audit logging`.
+- Implemented scope: `audit_logs` table, `AuditLog` model, `AuditLogService`, automatic audit logging for approved business modules, read-only Admin audit log list/detail UI, `audit-logs.view` RBAC permission, and sensitive audit summary filtering.
+- Changed modules: audit log migration/model/service/controller/views/tests, app service provider model observers, RBAC permissions, app layout navigation, and web routes.
+- Database impact: new reversible `audit_logs` table; rollback/reapply verified by Programmer.
+- Programmer verification: `php artisan migrate:fresh --seed --no-interaction` PASS; audit migration rollback/reapply PASS; `php artisan test` PASS with 57 tests and 440 assertions; `vendor/bin/pint --test` PASS; `npm run build` PASS with optional `fontaine` notice only.
+- Known limitations: audit log is an application/database audit foundation only; no external immutable ledger, signing, retention automation, alerts, or SIEM integration; unauthenticated system/background changes may record actor as `System`.
+- Current QA task: S5-V2-QA-01 verify migrations/rollback, audit records for key module changes, read-only behavior, sensitive data exclusion, RBAC behavior, regression flows, tests, Pint, and build.
