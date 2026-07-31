@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable(['project_id', 'project_milestone_id', 'title', 'assignee', 'priority', 'due_date', 'description', 'progress', 'status'])]
@@ -51,5 +52,10 @@ class ProjectTask extends Model
     public function milestone(): BelongsTo
     {
         return $this->belongsTo(ProjectMilestone::class, 'project_milestone_id');
+    }
+
+    public function documents(): MorphMany
+    {
+        return $this->morphMany(Document::class, 'attachable');
     }
 }

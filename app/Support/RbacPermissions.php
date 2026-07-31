@@ -36,6 +36,8 @@ final class RbacPermissions
             'payments.create' => 'Create payments',
             'payments.update' => 'Update payments',
             'payments.delete' => 'Delete payments',
+            'documents.view' => 'View documents',
+            'documents.manage' => 'Manage documents',
             'reports.view' => 'View reports',
             'reports.export' => 'Export reports',
         ];
@@ -57,6 +59,8 @@ final class RbacPermissions
                 'payments.create',
                 'payments.update',
                 'payments.delete',
+                'documents.view',
+                'documents.manage',
                 'reports.view',
                 'reports.export',
             ],
@@ -72,6 +76,8 @@ final class RbacPermissions
                 'projects.delete',
                 'project-workflow.view',
                 'project-workflow.manage',
+                'documents.view',
+                'documents.manage',
             ],
             self::VIEWER => [
                 'dashboard.view',
@@ -79,6 +85,7 @@ final class RbacPermissions
                 'projects.view',
                 'project-workflow.view',
                 'invoices.view',
+                'documents.view',
                 'reports.view',
             ],
         ];

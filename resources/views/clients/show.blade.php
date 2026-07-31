@@ -44,4 +44,14 @@
             @endif
         </section>
     </div>
+
+    @can('documents.view')
+        <section class="mt-6">
+            @include('documents._panel', [
+                'documents' => $client->documents,
+                'title' => 'Client documents',
+                'storeRoute' => route('clients.documents.store', $client),
+            ])
+        </section>
+    @endcan
 </x-layouts.app>

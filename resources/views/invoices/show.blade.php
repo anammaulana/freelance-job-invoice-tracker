@@ -34,6 +34,16 @@
         </div>
     </section>
 
+    @can('documents.view')
+        <section class="mt-6">
+            @include('documents._panel', [
+                'documents' => $invoice->documents,
+                'title' => 'Invoice documents',
+                'storeRoute' => route('invoices.documents.store', $invoice),
+            ])
+        </section>
+    @endcan
+
     <section class="mt-8">
         <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold text-zinc-950">Payments</h2>
@@ -54,6 +64,7 @@
                                 <th class="px-4 py-3">Amount</th>
                                 <th class="px-4 py-3">Method</th>
                                 <th class="px-4 py-3">Reference</th>
+                                <th class="px-4 py-3">Documents</th>
                                 <th class="px-4 py-3 text-right">Action</th>
                             </tr>
                         </thead>
@@ -64,6 +75,16 @@
                                     <td class="px-4 py-3 font-medium text-zinc-950">{{ number_format((float) $payment->amount, 2) }}</td>
                                     <td class="px-4 py-3 text-zinc-700">{{ $payment->method ?: '-' }}</td>
                                     <td class="px-4 py-3 text-zinc-700">{{ $payment->reference ?: '-' }}</td>
+                                    <td class="px-4 py-3">
+                                        @can('documents.view')
+                                            @include('documents._panel', [
+                                                'documents' => $payment->documents,
+                                                'title' => 'Payment documents',
+                                                'storeRoute' => route('invoices.payments.documents.store', [$invoice, $payment]),
+                                                'compact' => true,
+                                            ])
+                                        @endcan
+                                    </td>
                                     <td class="px-4 py-3 text-right">
                                         <div class="flex justify-end gap-3">
                                             @can('payments.update')
