@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 3 - Document & Attachment Foundation
 
-Current status: DOCUMENTATION - REVIEW READY
+Current status: WAITING_SPRINT_RESULT_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -122,7 +122,7 @@ Known risks:
 
 Last Owner approval: 2026-08-01 - v2 Sprint 3 plan approved.
 
-Next required Owner action: Wait for Scofield to prepare the v2 Sprint 3 Review, then approve or request revision of the Sprint result.
+Next required Owner action: Review v2 Sprint 3 result and reply with `APPROVE RESULT`, `REVISION RESULT`, or `CANCEL PROJECT`.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -433,3 +433,14 @@ v2 Sprint 3 documentation:
 - Files updated: `README.md`, `CHANGELOG.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
 - Documented: verified document metadata behavior, polymorphic attachment targets, expense attachment limitation, local Laravel Storage behavior, upload/download/delete baseline, validation rules, RBAC mapping, database impact, rollback/reapply evidence, QA PASS WITH NOTES verdict, test evidence, and known limitations.
 - Owner approval status: Sprint 3 result is not approved yet.
+
+v2 Sprint 3 review:
+- Sprint goal: Add a secure, testable document metadata and attachment foundation that can attach files to approved business records without building external storage or advanced document workflows.
+- Result: PASS WITH NOTES.
+- Completed tasks: S3-V2-PROG-01, S3-V2-PROG-02, S3-V2-PROG-03, S3-V2-QA-01, and S3-V2-DOC-01.
+- Deliverables: document metadata schema, polymorphic attachment relation, local upload/download/delete baseline, document panels on supported detail pages, RBAC-protected document actions, upload validation, feature/regression tests, and documentation updates.
+- Changed modules: document migration/model/service/controller/request, supported parent model relations and UI panels, document routes/RBAC permissions, document feature tests, README, CHANGELOG, DECISIONS, and project state.
+- QA result: PASS WITH NOTES.
+- Documentation status: Completed in commit `b4c00ae docs: document v2 sprint 3 attachments`.
+- Known limitations: document storage is local-only; no preview generation, public sharing, versioning, OCR, antivirus scanning, drag-and-drop upload, bulk upload, public API, deployment automation, expense CRUD, or recovery workflow for deleted files; payment attachment UI is embedded on invoice detail.
+- Owner approval required before marking v2 Sprint 3 complete and preparing the next sprint plan.
