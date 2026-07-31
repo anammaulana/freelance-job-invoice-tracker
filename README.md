@@ -1,6 +1,6 @@
 # Freelance Job & Invoice Tracker
 
-Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, and v2 role-based access control. This README documents verified behavior through v2 Sprint 1.
+Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, v2 role-based access control, and v2 project workflow foundation. This README documents verified behavior through v2 Sprint 2.
 
 ## Tech Stack
 
@@ -107,6 +107,34 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Project Manager can access dashboard, client, and project areas.
 - Blade navigation and action buttons follow backend permissions.
 
+### v2 Sprint 2
+
+- Project workflow foundation on project detail pages.
+- Milestone CRUD baseline:
+  - create milestones;
+  - view milestones;
+  - update milestone title, target date, weight, and description;
+  - soft delete milestones.
+- Task CRUD baseline:
+  - create tasks with optional milestone link;
+  - view tasks;
+  - update task title, optional milestone, assignee, priority, due date, description, progress, and status;
+  - soft delete tasks.
+- Task status is limited to:
+  - `Backlog`
+  - `To Do`
+  - `In Progress`
+  - `Review`
+  - `Done`
+  - `Cancelled`
+- Task priority is limited to `Low`, `Medium`, `High`, and `Urgent`.
+- Project progress is stored in `projects.progress`.
+- Project progress is recalculated by `ProjectWorkflowService` after milestone or task changes.
+- Lightweight project activity timeline records milestone/task create, update, and delete events.
+- Admin and Project Manager can manage project workflow data.
+- Viewer can read project workflow data but cannot create, update, or delete it.
+- Finance is blocked from project workflow access and writes under the current permission mapping.
+
 ### Sprint 1
 
 - User login and logout.
@@ -179,6 +207,39 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
   - `Active`
   - `Completed`
   - `Cancelled`
+- `progress` stores the verified v2 Sprint 2 project workflow progress percentage.
+
+### Project Milestones
+
+- A milestone must belong to a project.
+- `title` is required.
+- `target date` is required and must be a valid date.
+- `weight` is required and must be an integer from 1 to 100.
+- `description` is optional.
+- `progress` is stored as an integer percentage from 0 to 100.
+- Deleted milestones are soft-deleted.
+
+### Project Tasks
+
+- A task must belong to a project.
+- A task can optionally belong to a project milestone from the same project.
+- `title` is required.
+- `assignee` is optional.
+- `priority` is required and must be one of `Low`, `Medium`, `High`, or `Urgent`.
+- `due date` is optional and must be a valid date when provided.
+- `description` is optional.
+- `progress` is required and must be an integer from 0 to 100.
+- `status` is required and must be one of `Backlog`, `To Do`, `In Progress`, `Review`, `Done`, or `Cancelled`.
+- Deleted tasks are soft-deleted.
+
+### Project Progress
+
+- If active milestones exist, project progress uses the weighted average of milestone progress.
+- Milestone progress is the average progress of its active tasks.
+- A milestone without active tasks contributes `0%`.
+- If no active milestones exist, project progress uses the average progress of active project tasks.
+- If no workflow records exist, project progress is `0%`.
+- The calculated value is rounded and stored in `projects.progress`.
 
 ### Invoices
 
@@ -230,6 +291,13 @@ v2 Sprint 1 adds these RBAC tables:
 - `permission_role`: stores role-permission assignments.
 - `role_user`: stores user-role assignments.
 
+v2 Sprint 2 updates project workflow storage:
+
+- `projects.progress`: stores the calculated project progress percentage.
+- `project_milestones`: stores milestone title, optional description, target date, weight, calculated progress, timestamps, and soft delete state.
+- `project_tasks`: stores task title, optional milestone link, optional assignee, priority, optional due date, optional description, progress, status, timestamps, and soft delete state.
+- `project_activities`: stores lightweight project workflow timeline events for milestone/task create, update, and delete actions.
+
 Sprint 1 adds these application tables:
 
 - `clients`: stores freelancer client contact and company information.
@@ -248,12 +316,13 @@ v2 Sprint 1 adds no external package dependencies.
 
 - Admin: all current permissions.
 - Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, report view/export.
-- Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete.
-- Viewer: `dashboard.view`, `clients.view`, `projects.view`, `invoices.view`, `reports.view`.
+- Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete, project workflow view/manage.
+- Viewer: `dashboard.view`, `clients.view`, `projects.view`, project workflow view, `invoices.view`, `reports.view`.
+- Finance: no project workflow view/manage permission in the current mapping.
 
 ## Test Report
 
-Final verified command results after v2 Sprint 1:
+Final verified command results after v2 Sprint 2:
 
 ```bash
 php artisan migrate:fresh --seed --no-interaction
@@ -263,11 +332,13 @@ Result: passed.
 
 RBAC migration rollback check: passed.
 
+Project workflow migration rollback check: passed.
+
 ```bash
 php artisan test
 ```
 
-Result after v2 Sprint 1: passed with 33 tests and 225 assertions.
+Result after v2 Sprint 2: passed with 40 tests and 272 assertions.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -281,7 +352,7 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict after v2 Sprint 1: PASS WITH NOTES.
+QA verdict after v2 Sprint 2: PASS.
 
 Defects found: none.
 
@@ -289,6 +360,12 @@ Defects found: none.
 
 - Excel export now generates a fuller `.xlsx` OpenXML package with workbook metadata, styles, worksheet dimension, XML validation coverage, and worksheet content checks.
 - RBAC is implemented for current Blade modules only.
+- Project workflow is a baseline CRUD and progress calculation implementation.
+- Project activity timeline is lightweight workflow history only, not a full audit log.
+- Drag-and-drop kanban is not included.
+- Task attachment upload and document management are not included.
+- Expense management and finance report enhancement are not included in v2 Sprint 2.
+- Notifications, external storage, public API, mobile app, and advanced workflow automation are not included.
 - Audit logs and advanced role-management UI are not included.
 - Public API is not included.
 - Docker support is not included.
