@@ -8,7 +8,7 @@ Approved requirement version: v1
 
 Current sprint: Sprint 2 - Invoice Management and Payment Tracking
 
-Current status: IN_PROGRESS
+Current status: QA
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -68,7 +68,7 @@ Decisions:
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 
 Open issues:
-- Sprint 2 implementation is in progress.
+- Sprint 2 implementation completed locally by Lincon and is waiting for QA verification.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -77,7 +77,17 @@ Known risks:
 
 Last Owner approval: 2026-07-31 - Sprint 2 plan approved.
 
-Next required Owner action: Wait for Sprint 2 implementation handoff and QA review.
+Next required Owner action: Wait for Sprint 2 QA result.
+
+Sprint 2 implementation handoff:
+- Programmer task: S2-PROG-01
+- Commit: `c854942 Implement Sprint 2 invoice and payment tracking`
+- Branch: `development`, currently ahead of `origin/development` by 1 commit.
+- Implemented scope: Invoice CRUD, Payment Tracking, invoice/payment services, invoice/payment validation, authenticated invoice/payment routes, Blade views, model relationships, factories, migrations, and feature tests.
+- Business rules implemented: invoice number auto-generation using `INV-YYYYMM-XXXX`, invoice total cannot exceed project value, multiple payments per invoice, total payments cannot exceed invoice amount, and invoice status recalculation for Partial/Paid/Sent.
+- Database impact: added `invoices` and `payments` tables; payments cascade when invoice is deleted.
+- Programmer verification: `php artisan migrate:fresh --seed --no-interaction` passed; `php artisan test` passed with 22 tests and 110 assertions; `.\\vendor\\bin\\pint --test` passed; `npm run build` passed; `php artisan route:list --except-vendor` passed.
+- Known out-of-scope for Sprint 2: dashboard, Excel export, income report, public API, Docker, and multi-role authorization.
 
 Sprint 1 implementation handoff:
 - Project folder: `C:\Users\anam.maulana\.openclaw\workspace\projects\freelance-job-invoice-tracker`
