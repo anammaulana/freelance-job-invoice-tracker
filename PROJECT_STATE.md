@@ -8,7 +8,7 @@ Approved requirement version: v1
 
 Current sprint: Sprint 2 - Invoice Management and Payment Tracking
 
-Current status: DOCUMENTATION
+Current status: WAITING_SPRINT_RESULT_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -68,7 +68,7 @@ Decisions:
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 
 Open issues:
-- Sprint 2 QA passed with notes and documentation is in progress.
+- Sprint 2 review is ready and waiting for Owner result approval.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -77,7 +77,7 @@ Known risks:
 
 Last Owner approval: 2026-07-31 - Sprint 2 plan approved.
 
-Next required Owner action: Wait for Sprint 2 documentation and sprint review.
+Next required Owner action: Review Sprint 2 result and reply with `APPROVE RESULT`, `REVISION RESULT`, or `CANCEL PROJECT`.
 
 Sprint 2 implementation handoff:
 - Programmer task: S2-PROG-01
@@ -96,6 +96,23 @@ Sprint 2 QA result:
 - Acceptance criteria result: invoice CRUD, invoice number generation, invoice validation, project invoice total limit, multiple payments, payment total limit, Partial/Paid status updates, status recalculation after payment update/delete, auth protection, SQLite migration/seed, automated tests, formatting, and build all passed.
 - Defects found: None.
 - Note: Explicit automated auth coverage exists for invoice index; nested payment auth protection was verified through route middleware evidence rather than a dedicated unauthenticated payment feature test.
+
+Sprint 2 documentation:
+- Documentation task: S2-DOC-01
+- Commit: `1bc71e7 docs: document sprint 2 invoice payments`
+- File changed: `README.md`
+- Documented: verified Sprint 2 invoice CRUD, payment tracking, invoice/payment business rules, database impact, test report, and known limitations.
+
+Sprint 2 review:
+- Sprint goal: Implement invoice management, payment tracking, and invoice/payment business rules.
+- Result: PASS WITH NOTES
+- Completed tasks: S2-PROG-01, S2-QA-01, S2-DOC-01.
+- Deliverables: invoice CRUD, payment tracking, invoice/payment services, migrations, factories, validation, Blade views, authenticated routes, feature tests, and README documentation.
+- Changed modules: invoices, payments, project relationship, routes/layout navigation, tests, README, and project state.
+- QA result: PASS WITH NOTES.
+- Documentation status: Completed.
+- Known limitations: dashboard metrics, Excel export, income reports, public API, Docker support, multi-role authorization, and production deployment documentation are not completed in Sprint 2.
+- Owner approval required before marking Sprint 2 complete and preparing Sprint 3 plan.
 
 Sprint 1 implementation handoff:
 - Project folder: `C:\Users\anam.maulana\.openclaw\workspace\projects\freelance-job-invoice-tracker`
