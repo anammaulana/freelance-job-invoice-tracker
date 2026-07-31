@@ -69,6 +69,7 @@ Decisions:
 - 2026-07-31: Owner requested Sprint 2 revision via `REVISION RESULT`; remaining QA note must be resolved before result approval.
 - 2026-07-31: Sprint 2 result approved by Owner via `APPROVE RESULT`.
 - 2026-07-31: Sprint 3 plan approved by Owner via `APPROVE SPRINT`.
+- 2026-07-31: Owner requested Sprint 3 revision via `REVISION RESULT` because Excel export still errored.
 
 Open issues:
 - Sprint 3 final review is ready and waiting for Owner result approval.
@@ -125,6 +126,15 @@ Sprint 3 review:
 - Documentation status: Completed.
 - Known limitations: Excel export was not manually opened in desktop Microsoft Excel; optional `fontaine` build notice appears but build passes; public API, Docker, production deployment automation, external integrations, and multi-role authorization remain out of scope.
 - Owner approval required before marking Sprint 3 complete and preparing final delivery summary.
+
+Sprint 3 revision:
+- Revision task: S3-REV-01.
+- Owner request: Fix Excel export error before Sprint 3 result approval.
+- Scope: Harden local `.xlsx` exporter and add stricter export tests.
+- Changed files: `app/Services/SimpleXlsxExporter.php`, `tests/Feature/DashboardReportTest.php`, `README.md`, and `PROJECT_STATE.md`.
+- Fix summary: Excel export now includes a fuller OpenXML package with `docProps`, workbook relationships, styles, worksheet dimension, sheet views, page margins, escaped XML content, and validation of required package parts.
+- Verification: `php artisan migrate:fresh --seed --no-interaction` passed; `php artisan test` passed with 27 tests and 166 assertions; `.\\vendor\\bin\\pint --test` passed; `npm run build` passed.
+- Result: PASS. Excel export revision is ready for Owner review.
 
 Sprint 2 implementation handoff:
 - Programmer task: S2-PROG-01

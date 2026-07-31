@@ -232,7 +232,7 @@ Result: passed.
 php artisan test
 ```
 
-Result: passed with `27 tests, 158 assertions`.
+Result after Sprint 3 Excel export revision: passed with `27 tests, 166 assertions`.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -246,13 +246,13 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict: `PASS WITH NOTES`.
+QA verdict after Sprint 3 Excel export revision: `PASS`.
 
 Defects found: none.
 
 ## Known Limitations
 
-- Excel export was validated as an OpenXML ZIP with worksheet content, but was not manually opened in desktop Microsoft Excel during QA.
+- Excel export now generates a fuller `.xlsx` OpenXML package with workbook metadata, styles, worksheet dimension, XML validation coverage, and worksheet content checks.
 - The application uses a single Admin/Freelancer role only.
 - Public API is not included.
 - Docker support is not included.

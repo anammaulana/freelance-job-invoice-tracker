@@ -116,7 +116,7 @@ class DashboardReportTest extends TestCase
     public function test_income_report_export_downloads_valid_xlsx_file(): void
     {
         $user = User::factory()->create();
-        $client = Client::factory()->create(['name' => 'Export Client']);
+        $client = Client::factory()->create(['name' => 'Export & Client']);
         $project = Project::factory()->for($client)->create(['name' => 'Export Project']);
         $invoice = Invoice::factory()->for($project)->create([
             'invoice_number' => 'INV-EXPORT',
@@ -144,13 +144,21 @@ class DashboardReportTest extends TestCase
         $zip = new ZipArchive;
 
         $this->assertTrue($zip->open($path));
+        $this->assertNotFalse($zip->getFromName('[Content_Types].xml'));
+        $this->assertNotFalse($zip->getFromName('_rels/.rels'));
+        $this->assertNotFalse($zip->getFromName('docProps/app.xml'));
+        $this->assertNotFalse($zip->getFromName('docProps/core.xml'));
+        $this->assertNotFalse($zip->getFromName('xl/workbook.xml'));
+        $this->assertNotFalse($zip->getFromName('xl/_rels/workbook.xml.rels'));
+        $this->assertNotFalse($zip->getFromName('xl/styles.xml'));
         $worksheet = $zip->getFromName('xl/worksheets/sheet1.xml');
         $zip->close();
         @unlink($path);
 
         $this->assertIsString($worksheet);
+        $this->assertNotFalse(simplexml_load_string($worksheet));
         $this->assertStringContainsString('INV-EXPORT', $worksheet);
-        $this->assertStringContainsString('Export Client', $worksheet);
+        $this->assertStringContainsString('Export &amp; Client', $worksheet);
         $this->assertStringContainsString('750', $worksheet);
     }
 
