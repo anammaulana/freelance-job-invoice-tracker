@@ -6,15 +6,15 @@ Project objective: Build a local Laravel web application for freelancers to mana
 
 Approved requirement version: v1
 
-Current sprint: Sprint 2 - Invoice Management and Payment Tracking
+Current sprint: Sprint 3 - Dashboard, Excel Reports, QA, and Final Documentation
 
-Current status: WAITING_SPRINT_RESULT_APPROVAL
+Current status: WAITING_SPRINT_PLAN_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
+- Sprint 2: Invoice management, payment tracking, and invoice/payment business rules.
 
 Pending sprints:
-- Sprint 2: Invoice management, payment tracking, and invoice/payment business rules.
 - Sprint 3: Dashboard, Excel reports, automated testing, QA fixes, and final documentation.
 
 Approved constraints:
@@ -67,18 +67,31 @@ Decisions:
 - 2026-07-31: Sprint 1 result approved by Owner via `APPROVE RESULT` with requirement change: replace CSV export with Excel export.
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: Owner requested Sprint 2 revision via `REVISION RESULT`; remaining QA note must be resolved before result approval.
+- 2026-07-31: Sprint 2 result approved by Owner via `APPROVE RESULT`.
 
 Open issues:
-- Sprint 2 revised review is ready and waiting for Owner result approval.
+- Sprint 3 plan is ready and waiting for Owner approval.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
 - Invoice/payment rules need careful automated coverage to prevent financial data inconsistencies.
 - Sprint 3 contains multiple activities and may need strict scope control.
 
-Last Owner approval: 2026-07-31 - Sprint 2 plan approved.
+Last Owner approval: 2026-07-31 - Sprint 2 result approved.
 
-Next required Owner action: Review Sprint 2 result and reply with `APPROVE RESULT`, `REVISION RESULT`, or `CANCEL PROJECT`.
+Next required Owner action: Review Sprint 3 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
+
+Sprint 3 plan:
+- Sprint title: Dashboard, Excel Reports, QA, and Final Documentation.
+- Sprint goal: Complete the final demonstrable application scope with dashboard metrics, income reporting with Excel export, broader regression coverage, QA fixes, and final documentation.
+- Included scope: dashboard summary cards, overdue invoice list, latest payments list, income report filter by date range, invoice status recap, Excel export for income report, final automated/regression test coverage, QA fixes for Sprint 3 findings, README/test report/known limitations update, and final delivery readiness notes.
+- Excluded scope: public API, Docker, multi-role authorization, paid services, external integrations, production deployment automation, and features outside the approved v1 scope.
+- Programmer tasks: S3-PROG-01 implement dashboard metrics and report pages; S3-PROG-02 implement Excel export; S3-PROG-03 add/adjust automated tests and fix QA defects only within approved Sprint 3 scope.
+- QA tasks: S3-QA-01 verify dashboard/report correctness, Excel export behavior, auth protection, regression flows for clients/projects/invoices/payments, SQLite fresh migration/seed, tests, formatting, and build.
+- Technical Writer tasks: S3-DOC-01 update README with final setup, feature list, demo account, test report, known limitations, and handover notes after QA PASS or PASS WITH NOTES.
+- Dependencies: Sprint 1 and Sprint 2 completed; existing invoice/payment data model available; Excel export package must be local/free and compatible with Laravel.
+- Risks: Excel export may require adding a package; dashboard totals need precise financial query coverage; one-day Sprint 3 is tight because it combines final features, QA, and documentation.
+- Acceptance criteria: Dashboard shows client count, active project count, unpaid invoice total, total income, overdue invoices, and five latest payments; income report filters by date range; invoice recap groups by status; Excel export downloads a valid `.xlsx` file; all new pages require authentication; feature tests cover core dashboard/report/export behavior; existing flows do not regress; README is updated after QA.
 
 Sprint 2 implementation handoff:
 - Programmer task: S2-PROG-01
