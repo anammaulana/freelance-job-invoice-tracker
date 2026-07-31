@@ -88,6 +88,7 @@ Decisions:
 - 2026-07-31: v2 Sprint 1 QA completed by Nadella with verdict `PASS WITH NOTES`.
 - 2026-07-31: v2 Sprint 1 documentation completed by Sara in commit `e87ab9c docs: document v2 sprint 1 QA handoff`.
 - 2026-07-31: v2 Sprint 1 Review prepared; waiting for Owner result approval.
+- 2026-07-31: Owner requested v2 Sprint 1 review revision via `REVISION RESULT`; review format must include acceptance criteria status, database impact, breaking changes, performance impact, security review, technical debt, risk update, sprint metrics, next sprint recommendation, and Owner checklist.
 
 Open issues:
 - None for v2 Sprint 1.
@@ -308,3 +309,17 @@ v2 Sprint 1 review:
 - Documentation status: Completed.
 - Known limitations: RBAC management UI, audit log, milestone/task workflow, documents, expenses, API, Docker, and deployment remain out of v2 Sprint 1 scope.
 - Owner approval required before marking v2 Sprint 1 complete and preparing v2 Sprint 2 plan.
+
+v2 Sprint 1 revised review:
+- Revision reason: Owner requested a more complete sprint artifact before result approval.
+- Result: PASS WITH NOTES.
+- Acceptance criteria status: PASS - migrations are reversible; roles and permissions are seeded; demo user has Admin access; Admin can access existing stable modules; Viewer cannot create/update/delete; Finance can access finance-related modules within implemented scope; Project Manager can access project/client workflow-adjacent modules within implemented scope; unauthorized requests return expected forbidden/redirect behavior; existing v1 feature tests pass; new RBAC tests pass; README, CHANGELOG, and DECISIONS are updated after QA.
+- Database impact: added `roles`, `permissions`, `role_user`, and `permission_role`; modified user behavior through role relationship helpers; rollback verification passed with `php artisan migrate:rollback --step=1 --no-interaction`.
+- Breaking changes: no user-facing breaking changes found; new modules must attach permission middleware and permission-aware UI checks to stay aligned with the RBAC baseline.
+- Performance impact: no significant performance impact found in local QA scope; permission cache optimization is not implemented yet.
+- Security review: unauthorized users blocked; permission middleware tested; guest access redirect verified; role-limited access tested for Viewer, Finance, and Project Manager; Admin full-access behavior verified.
+- Technical debt: RBAC management UI is not implemented; permission caching is not optimized; permission matrix must be expanded carefully as v2 modules are added.
+- Current risks: Low for v2 Sprint 1 result approval; Medium for future sprints because permission mapping complexity will grow with workflow, document, expense, and audit modules.
+- Sprint metrics: duration target 1 day; completed task groups 5; bugs found 0; bugs fixed 0; regression PASS; verification coverage 33 tests and 225 assertions; migration rollback PASS; Pint PASS; build PASS with optional `fontaine` notice.
+- Recommended next sprint: v2 Sprint 2 - Project Workflow Foundation, covering milestone foundation, task foundation, simple status workflow, project progress calculation baseline, and activity timeline baseline if it fits one-day scope.
+- Owner checklist: deliverables match approved Sprint 1 scope; QA returned PASS WITH NOTES; documentation updated; no blocking defects found; ready for Owner result decision.
