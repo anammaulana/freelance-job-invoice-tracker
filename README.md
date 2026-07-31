@@ -186,6 +186,25 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Viewer can read expenses and reports where permitted but cannot create, update, delete, upload, or delete expense documents.
 - Project Manager is blocked from expense and finance report access/writes under the current permission mapping.
 
+### v2 Sprint 5
+
+- Audit log foundation for important business data changes.
+- Automatic audit logging is verified for create, update, delete, and soft-delete actions on:
+  - Clients;
+  - Projects;
+  - Invoices;
+  - Payments;
+  - Expenses;
+  - Documents;
+  - Project Milestones;
+  - Project Tasks.
+- Audit records capture actor user, actor name/email snapshot, action, target type, target ID, timestamp, and safe summarized before/after changes where applicable.
+- Audit actions use `created`, `updated`, `deleted`, and `soft_deleted`.
+- Audit summaries exclude sensitive fields and limit stored text values instead of storing full payloads.
+- Admin has read-only audit log list and detail pages.
+- The current seeded RBAC mapping grants `audit-logs.view` only to Admin.
+- Non-authorized seeded roles cannot view audit logs.
+
 ### Sprint 1
 
 - User login and logout.
@@ -350,6 +369,16 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Delete requires authenticated access and parent-record write permission.
 - Deleting a document removes both metadata and the local stored file.
 
+### Audit Logs
+
+- Audit logs are created automatically for verified important changes in the supported business modules.
+- Audit log entries are read-only through the application UI.
+- `changes.before` and `changes.after` contain safe summarized values only.
+- Passwords, tokens, secrets, API keys, private keys, credentials, uploaded file contents, full sensitive payloads, document `stored_path`, and document `disk` values must not be stored in audit summaries.
+- For document audit summaries, only safe metadata such as attachment target, original filename, MIME type, size, and uploader reference is retained.
+- Long text values are truncated in audit summaries.
+- Unauthenticated system/background changes may record no actor user and display as system-originated activity.
+
 ## Dashboard And Report Behavior
 
 - `/dashboard` is available only after login.
@@ -394,6 +423,14 @@ v2 Sprint 4 adds expense storage:
 - `expenses` includes indexes for date/category and vendor lookups.
 - The expense migration rollback and reapply flow was verified by QA.
 
+v2 Sprint 5 adds audit log storage:
+
+- `audit_logs`: stores nullable actor user reference, actor name/email snapshot, action, target type, target ID, safe summarized changes JSON, and creation timestamp.
+- `audit_logs.actor_user_id` references `users`, cascades user key updates, and is set to `null` if the related user is deleted.
+- `audit_logs` includes indexes for target lookup, action/date lookup, and actor lookup.
+- Rolling back the Sprint 5 migration drops `audit_logs`; reapplying recreates the audit log table.
+- The audit migration rollback and reapply flow was verified by QA.
+
 Sprint 1 adds these application tables:
 
 - `clients`: stores freelancer client contact and company information.
@@ -411,15 +448,17 @@ v2 Sprint 1 adds no external package dependencies.
 ## RBAC Mapping
 
 - Admin: all current permissions.
+- Admin currently has `audit-logs.view` and can view read-only audit log list/detail pages.
 - Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, expense view/create/update/delete, document view/manage, report view/export. Document write access is limited by parent record rules to invoice, payment, and expense documents.
 - Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete, project workflow view/manage, document view/manage. Document write access applies to project, task, and client-related documents.
 - Viewer: `dashboard.view`, `clients.view`, `projects.view`, project workflow view, `invoices.view`, `expenses.view`, document view, `reports.view`. Viewer can download documents only where the parent record is readable and cannot upload or delete.
 - Project Manager: no expense or report permission in the current mapping, so Project Manager is blocked from expense and finance report access/writes.
 - Finance: no project workflow view/manage permission in the current mapping, so Finance is blocked from project/task document writes.
+- Current seeded RBAC gives `audit-logs.view` only to Admin. Future custom non-Admin roles should not receive this permission until target-module filtering is designed and verified.
 
 ## Test Report
 
-Final verified command results after v2 Sprint 4:
+Final verified command results after v2 Sprint 5:
 
 ```bash
 php artisan migrate:fresh --seed --no-interaction
@@ -435,11 +474,13 @@ Document attachment migration rollback and reapply check: passed.
 
 Expense migration rollback and reapply check: passed.
 
+Audit migration rollback and reapply check: passed.
+
 ```bash
 php artisan test
 ```
 
-Result after v2 Sprint 4: passed with 53 tests and 380 assertions.
+Result after v2 Sprint 5: passed with 57 tests and 440 assertions.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -453,11 +494,11 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict after v2 Sprint 4: PASS.
+QA verdict after v2 Sprint 5: PASS WITH NOTES.
 
 Defects found: none.
 
-QA note: Expense CRUD, soft delete, validation, optional project relation, polymorphic expense documents, finance report totals, Sprint 4 RBAC permissions, regression tests, Pint, and frontend build were verified.
+QA note: Audit log migration rollback/reapply, audit records for key module changes, read-only audit UI, sensitive data exclusion, current Admin-only audit RBAC behavior, regression tests, Pint, and frontend build were verified. Residual future risk remains if a custom non-Admin database role is later granted only `audit-logs.view`, because audit log listing/detail does not filter records by target module permission.
 
 ## Known Limitations
 
@@ -470,12 +511,15 @@ QA note: Expense CRUD, soft delete, validation, optional project relation, polym
 - File delete removes metadata and the local stored file without a recovery workflow.
 - Payment attachment UI is embedded on the invoice detail page.
 - Expense tracking is a baseline CRUD implementation with optional project relation and expense document attachments.
+- Audit logging is an application/database audit foundation only.
+- Audit log access is currently seeded for Admin only.
+- Future custom non-Admin roles with `audit-logs.view` may require target-module filtering before broader audit access is enabled.
 - XLSX export remains payment-only and does not include expense rows, expense totals, or net profit.
 - Preview generation, document versioning, OCR, antivirus scanning, public sharing links, drag-and-drop upload, and bulk upload are not included.
 - Drag-and-drop kanban is not included.
 - Recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, payment gateway integration, and external accounting integration are not included.
 - Notifications, external storage, public API, mobile app, and advanced workflow automation are not included.
-- Audit logs and advanced role-management UI are not included.
+- External immutable ledger, cryptographic signing, SIEM integration, alerting, retention automation, real-time event streaming, webhook export, analytics dashboard, public API access to audit logs, production monitoring, and advanced role-management UI are not included.
 - Public API is not included.
 - Docker support is not included.
 - Production deployment automation is not included.

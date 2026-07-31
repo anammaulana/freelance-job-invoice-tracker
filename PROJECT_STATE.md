@@ -121,10 +121,12 @@ Decisions:
 - 2026-08-01: v2 Sprint 5 feature branch created: `feature/v2-sprint-5-audit-log-hardening`.
 - 2026-08-01: v2 Sprint 5 implementation completed by Lincon in commit `6cca713 feat: add v2 sprint 5 audit logging`; Sprint 5 moved to QA verification.
 - 2026-08-01: v2 Sprint 5 QA completed by Nadella with verdict `PASS WITH NOTES`; documentation may proceed.
+- 2026-08-01: v2 Sprint 5 documentation completed by Sara; Sprint Review still requires Owner result approval.
 
 Open issues:
 - No blocking open issues for v2 Sprint 5 documentation handoff.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
+- QA note carried forward: custom non-Admin roles with only `audit-logs.view` may need target-module filtering before broader audit access is enabled.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
 
 Known risks:
@@ -540,3 +542,9 @@ v2 Sprint 5 QA result:
 - Regression risk: low.
 - Documentation status: may proceed to Sara.
 - Current documentation task: S5-V2-DOC-01 update README, CHANGELOG, and DECISIONS with audit scope, database impact, RBAC behavior, sensitive data policy, known limitations, test evidence, and QA note.
+
+v2 Sprint 5 documentation handoff:
+- Documentation task: S5-V2-DOC-01.
+- Documentation status: Completed.
+- Documented: verified audit log table/foundation, automatic audit logging coverage, audit fields, read-only Admin UI, current Admin-only `audit-logs.view` RBAC behavior, sensitive data exclusion policy, database impact, rollback/reapply evidence, QA PASS WITH NOTES verdict, test evidence, known limitations, and future custom-role filtering risk.
+- Result approval: not approved yet; Sprint 5 remains pending Sprint Review and Owner result approval.

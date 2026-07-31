@@ -1,5 +1,16 @@
 # Changelog
 
+## v2 Sprint 5 - Audit Log Hardening
+
+- Documented the verified `audit_logs` table and audit log foundation.
+- Documented automatic audit logging for important create, update, delete, and soft-delete actions on clients, projects, invoices, payments, expenses, documents, project milestones, and project tasks.
+- Documented audit fields: actor user, actor name/email snapshot, action, target type, target ID, timestamp, and safe summarized before/after changes.
+- Documented read-only Admin audit log list/detail UI and current `audit-logs.view` RBAC behavior.
+- Documented sensitive data exclusion policy for passwords, tokens, secrets, uploaded file contents, full sensitive payloads, document `stored_path`, and document `disk` details.
+- Documented database impact for the reversible `audit_logs` table and verified migration rollback/reapply evidence.
+- Documented QA PASS WITH NOTES evidence: `php artisan migrate:fresh --seed --no-interaction` passed, audit migration rollback/reapply passed, `php artisan test` passed with 57 tests and 440 assertions, Pint passed, and `npm run build` passed with optional `fontaine` notice only.
+- Added known limitations for no external immutable ledger, cryptographic signing, SIEM integration, alerting, retention automation, real-time event streaming, webhook export, public API, analytics dashboard, production monitoring, Docker/deployment automation, or module-level audit filtering for future custom non-Admin roles.
+
 ## v2 Sprint 4 - Expense & Finance Enhancement
 
 - Documented verified expense CRUD behavior: list, create, view, update, and soft delete.

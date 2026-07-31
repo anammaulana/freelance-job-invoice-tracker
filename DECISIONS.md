@@ -1,5 +1,19 @@
 # Decisions
 
+## v2 Sprint 5 Audit Log Hardening
+
+- Audit logging is implemented as an application/database audit foundation within the existing Laravel modular monolith.
+- Important model changes are captured through first-party Eloquent model events registered centrally in the application service provider.
+- `AuditLogService` owns audit record creation, safe attribute summarization, and sensitive-field exclusion so controllers do not duplicate audit formatting logic.
+- The audited model set is limited to Clients, Projects, Invoices, Payments, Expenses, Documents, Project Milestones, and Project Tasks.
+- Audit entries store actor user reference when available, actor name/email snapshot, action, target type, target ID, timestamp, and summarized before/after changes.
+- Audit records are intentionally read-only through the application UI.
+- Sensitive values must not be stored in audit summaries, including passwords, tokens, secrets, API keys, private keys, credentials, uploaded file contents, full sensitive payloads, document `stored_path`, or document `disk` details.
+- Document audit summaries use an allow-list of safe metadata fields instead of storing full document payload details.
+- Current seeded access is Admin-only through `audit-logs.view`.
+- Future custom non-Admin roles with `audit-logs.view` may require target-module filtering before broader audit access is enabled, because the verified Sprint 5 controller does not filter audit rows by target module permission.
+- v2 Sprint 5 excludes external immutable ledger, cryptographic signing, SIEM integration, alerting, retention automation, real-time event streaming, webhook export, public API, analytics dashboard, production monitoring, Docker/deployment automation, and advanced role-management UI.
+
 ## v2 Sprint 4 Expense & Finance Planning
 
 - v2 Sprint 4 is planned as Expense & Finance Enhancement after Owner approved the v2 Sprint 3 result on 2026-08-01.
