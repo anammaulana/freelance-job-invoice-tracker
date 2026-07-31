@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 1 - Architecture Baseline and RBAC Foundation
 
-Current status: QA
+Current status: WAITING_SPRINT_RESULT_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -16,7 +16,6 @@ Completed sprints:
 - Sprint 3: Dashboard, Excel reports, automated testing, QA fixes, and final documentation.
 
 Pending sprints:
-- v2 Sprint 1: Architecture baseline and RBAC foundation.
 - v2 future sprints: project workflow, documents, expenses/finance enhancement, audit log, documentation hardening.
 
 Approved constraints:
@@ -78,7 +77,6 @@ Decisions:
 - 2026-07-31: Sprint 1 result approved by Owner via `APPROVE RESULT` with requirement change: replace CSV export with Excel export.
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: Owner requested Sprint 2 revision via `REVISION RESULT`; remaining QA note must be resolved before result approval.
-- 2026-07-31: v2 Sprint 1 implementation completed locally; pending independent QA verification because native specialist subagent tooling was unavailable in this session.
 - 2026-07-31: Sprint 2 result approved by Owner via `APPROVE RESULT`.
 - 2026-07-31: Sprint 3 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: Owner requested Sprint 3 revision via `REVISION RESULT` because Excel export still errored.
@@ -86,18 +84,22 @@ Decisions:
 - 2026-07-31: v2 enhancement requirement approved by Owner via `APPROVE REQUIREMENT`.
 - 2026-07-31: v2 Sprint 1 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-07-31: v2 Sprint 1 feature branch created: `feature/v2-sprint-1-rbac-foundation`.
+- 2026-07-31: v2 Sprint 1 implementation completed by Lincon in commit `b46bee5 Implement v2 sprint 1 RBAC foundation`.
+- 2026-07-31: v2 Sprint 1 QA completed by Nadella with verdict `PASS WITH NOTES`.
+- 2026-07-31: v2 Sprint 1 documentation completed by Sara in commit `e87ab9c docs: document v2 sprint 1 QA handoff`.
+- 2026-07-31: v2 Sprint 1 Review prepared; waiting for Owner result approval.
 
 Open issues:
-- v2 Sprint 1 implementation is in progress.
+- None for v2 Sprint 1.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
 - Invoice/payment rules need careful automated coverage to prevent financial data inconsistencies.
 - Sprint 3 contains multiple activities and may need strict scope control.
 
-Last Owner approval: 2026-07-31 - Sprint 3 result approved.
+Last Owner approval: 2026-07-31 - v2 Sprint 1 plan approved.
 
-Next required Owner action: Wait for v2 Sprint 1 implementation, QA, documentation, and Sprint Review.
+Next required Owner action: Review v2 Sprint 1 result and reply `APPROVE RESULT`, `REVISION RESULT`, or `CANCEL PROJECT`.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -280,4 +282,29 @@ v2 Sprint 1 implementation handoff:
 - RBAC mapping: Admin all current permissions; Finance dashboard/invoices/payments/reports/export; Project Manager dashboard/clients/projects; Viewer dashboard/clients/projects/invoices/reports read-only.
 - Verification: `php artisan migrate:fresh --seed --no-interaction` passed; `php artisan test` passed with 33 tests and 225 assertions; `.\\vendor\\bin\\pint --test` passed after formatting; `npm run build` passed with optional `fontaine` notice.
 - Known limitations: RBAC management UI, audit log, future v2 project workflow, documents, expenses, public API, Docker, and production deployment are outside v2 Sprint 1.
-- QA status: pending independent QA agent verification; native subagent tooling was unavailable during this implementation session.
+- QA status: completed by Nadella with verdict `PASS WITH NOTES`.
+
+v2 Sprint 1 QA result:
+- QA task: S1-V2-QA-01.
+- Verdict: PASS WITH NOTES.
+- Commands passed: `git status --short --branch`, `php artisan migrate:fresh --seed --no-interaction`, `php artisan migrate:rollback --step=1 --no-interaction`, `php artisan test` with 33 tests and 225 assertions, `.\\vendor\\bin\\pint --test`, and `npm run build`.
+- Acceptance criteria result: migrations reversible, roles/permissions seeded, demo Admin access, Admin stable module access, Viewer read-only restrictions, Finance finance-module access, Project Manager client/project access, unauthorized 403/redirect behavior, v1 regression coverage, RBAC tests, and documentation checks all passed.
+- Defects found: None.
+- Notes: `npm run build` passes with optional `fontaine` warning; permission mapping should remain a regression focus in future sprints.
+
+v2 Sprint 1 documentation:
+- Documentation task: S1-V2-DOC-01.
+- Commit: `e87ab9c docs: document v2 sprint 1 QA handoff`.
+- Files changed: `README.md`, `CHANGELOG.md`, and `DECISIONS.md`.
+- Documented: QA verdict, RBAC role mapping, migration rollback evidence, automated test result, build note, and v2 Sprint 1 limitations.
+
+v2 Sprint 1 review:
+- Sprint goal: Establish the v2 technical baseline and flexible role/permission foundation without changing stable feature behavior unnecessarily.
+- Result: PASS WITH NOTES.
+- Completed tasks: S1-V2-PROG-01, S1-V2-PROG-02, S1-V2-PROG-03, S1-V2-QA-01, and S1-V2-DOC-01.
+- Deliverables: architecture baseline docs, RBAC schema/models/seeders, permission middleware, Gate integration, protected routes, permission-aware UI actions/navigation, RBAC tests, regression evidence, and documentation updates.
+- Changed modules: RBAC models/migration/seeder/support, User role helpers, app service provider, permission middleware, routes, Blade navigation/actions, tests, README, CHANGELOG, DECISIONS, and project state.
+- QA result: PASS WITH NOTES.
+- Documentation status: Completed.
+- Known limitations: RBAC management UI, audit log, milestone/task workflow, documents, expenses, API, Docker, and deployment remain out of v2 Sprint 1 scope.
+- Owner approval required before marking v2 Sprint 1 complete and preparing v2 Sprint 2 plan.
