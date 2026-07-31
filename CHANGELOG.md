@@ -2,9 +2,15 @@
 
 ## v2 Sprint 4 - Expense & Finance Enhancement
 
-- Planned next approved-gate sprint for expense management and finance report enhancement after Owner approved v2 Sprint 3 result.
-- Proposed scope includes expense CRUD, optional project relation, expense document attachment using the existing document foundation, income/expense/net profit reporting, RBAC protection, automated tests, and documentation updates.
-- Proposed exclusions include recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, external accounting integrations, public API, Docker, deployment automation, and advanced audit log hardening.
+- Documented verified expense CRUD behavior: list, create, view, update, and soft delete.
+- Documented expense validation for optional project, required category/date/amount/description, and optional vendor/payee.
+- Documented expense document attachment through the existing polymorphic document flow.
+- Documented enhanced finance reporting for filtered income, filtered expenses, and net profit.
+- Clarified that `income-report.xlsx` export remains payment-only and does not include expenses or net profit.
+- Documented Sprint 4 RBAC behavior: Admin and Finance manage expenses, Viewer reads only, and Project Manager is blocked from expense/report access.
+- Documented database impact for the reversible `expenses` table and verified migration rollback/reapply evidence.
+- Documented QA PASS evidence: `php artisan migrate:fresh --seed --no-interaction` passed, expense migration rollback/reapply passed, `php artisan test` passed with 53 tests and 380 assertions, Pint passed, and `npm run build` passed.
+- Added known limitations for no recurring expenses, tax calculation, budgeting, approval/reimbursement workflow, bank import, OCR receipt scanning, payment gateway integration, external accounting integration, public API, Docker/deployment automation, or advanced audit log hardening.
 
 ## v2 Sprint 3 - Document & Attachment Foundation
 

@@ -10,6 +10,16 @@
 - Existing invoice/payment business rules and income export behavior must not be changed unless required by approved Sprint 4 scope.
 - v2 Sprint 4 excludes recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, external accounting integrations, public API, Docker, deployment automation, and advanced audit log hardening.
 
+## v2 Sprint 4 Expense & Finance Verified Baseline
+
+- Expense tracking is implemented as baseline CRUD with soft delete.
+- Expense records store optional project relation, required category, required expense date, required amount, required description, and optional vendor/payee.
+- Expense documents use the existing polymorphic document attachment foundation and inherit the verified local storage, validation, download, and delete behavior.
+- Finance reporting uses payments filtered by `payment_date` for income and non-deleted expenses filtered by `expense_date` for expenses.
+- Net profit is calculated as filtered income minus filtered expenses.
+- The existing `income-report.xlsx` export remains payment-only and must not be presented as an expense or profit export.
+- Admin and Finance can manage expenses and expense documents; Viewer can read expenses/reports where permitted; Project Manager has no expense/report permission in the current mapping.
+
 ## Architecture Baseline
 
 - The application remains a modular monolith.

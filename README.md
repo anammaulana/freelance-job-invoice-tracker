@@ -1,6 +1,6 @@
 # Freelance Job & Invoice Tracker
 
-Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, v2 role-based access control, v2 project workflow foundation, and v2 document attachment foundation. This README documents verified behavior through v2 Sprint 3.
+Laravel 13 web application for freelancers to manage clients, projects, invoices, payments, expenses, dashboard metrics, finance reports, v2 role-based access control, v2 project workflow foundation, and v2 document attachment foundation. This README documents verified behavior through v2 Sprint 4.
 
 ## Tech Stack
 
@@ -103,7 +103,7 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Existing stable modules are protected by permission middleware.
 - Admin can access existing stable modules.
 - Viewer can view allowed modules but cannot create, update, or delete.
-- Finance can access dashboard, invoice, payment, income report, and report export areas.
+- Finance can access dashboard, invoice, payment, expense, finance report, and report export areas.
 - Project Manager can access dashboard, client, and project areas.
 - Blade navigation and action buttons follow backend permissions.
 
@@ -144,7 +144,7 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
   - Client;
   - Invoice;
   - Payment.
-- Expense attachment is prepared by the polymorphic design only. No expense module, expense CRUD, or expense document UI is implemented.
+- Expense attachment was prepared by the polymorphic design and is implemented through the expense detail document panel in v2 Sprint 4.
 - Document metadata stores original filename, stored path, storage disk, MIME type, file size, uploaded-by user, timestamps, and attachable target.
 - Uploaded files use Laravel local Storage disk under the `documents` directory.
 - Downloads go through authenticated controller routes instead of exposing raw filesystem paths.
@@ -166,6 +166,25 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Project Manager can manage project, task, and client-related documents.
 - Viewer has read-only document access where the parent record is permitted.
 - Finance can manage invoice and payment documents, and is blocked from unauthorized project/task document writes.
+
+### v2 Sprint 4
+
+- Expense tracking CRUD with authenticated pages:
+  - list expenses;
+  - create expenses;
+  - view expense details;
+  - update expenses;
+  - soft delete expenses.
+- Expense fields include optional project, required category, required expense date, required amount, required description, and optional vendor/payee.
+- Expense records can optionally relate to a project. Project deletion sets the related expense `project_id` to `null`.
+- Expense detail pages reuse the existing document attachment flow for expense documents.
+- Dashboard finance summary includes total expenses and net profit in addition to existing income metrics.
+- Finance report shows filtered income, filtered expense total, and net profit for the selected date range.
+- Finance report includes a payment table, expense table, and existing invoice status recap.
+- The existing XLSX export remains payment-only and does not include expense rows or net profit rows.
+- Admin and Finance can manage expenses.
+- Viewer can read expenses and reports where permitted but cannot create, update, delete, upload, or delete expense documents.
+- Project Manager is blocked from expense and finance report access/writes under the current permission mapping.
 
 ### Sprint 1
 
@@ -205,7 +224,9 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
   - total clients;
   - active projects;
   - unpaid invoice total;
-  - total income from recorded payments.
+  - total income from recorded payments;
+  - total expenses;
+  - net profit.
 - Dashboard overdue invoice list for unpaid and non-cancelled invoices whose due date has passed.
 - Dashboard latest payments list showing the five most recent payments.
 - Authenticated income report page.
@@ -213,6 +234,7 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 - Filtered income total.
 - Invoice status recap grouped by status.
 - Excel export for the income report as `income-report.xlsx`.
+- The XLSX export remains based on filtered payment rows only.
 
 ## Business Rules
 
@@ -303,11 +325,22 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
   - partial payment sets status to `Partial`;
   - full payment sets status to `Paid`.
 
+### Expenses
+
+- An expense may optionally belong to an existing project.
+- `category` is required and has a maximum length of 120 characters.
+- `expense date` is required and must be a valid date.
+- `amount` is required, must be numeric, must be at least `0.01`, and cannot exceed `999999999.99`.
+- `description` is required and has a maximum length of 2000 characters.
+- `vendor/payee` is optional and has a maximum length of 160 characters.
+- Deleted expenses are soft-deleted.
+- If the related project is deleted, the expense remains and its project relation is cleared.
+
 ### Documents
 
 - A document must be attached to one supported parent record.
-- Supported implemented parent records are Project, Project Task, Client, Invoice, and Payment.
-- Expense attachment is not implemented as a UI or CRUD flow in v2 Sprint 3.
+- Supported implemented parent records are Project, Project Task, Client, Invoice, Payment, and Expense.
+- Expense documents use the same upload, download, delete, validation, and local storage behavior as the existing document flow.
 - `document` upload is required when creating a document attachment.
 - Maximum upload size is 5 MB.
 - Allowed upload extensions are `pdf`, `jpg`, `jpeg`, `png`, `webp`, `txt`, `csv`, `doc`, `docx`, `xls`, and `xlsx`.
@@ -320,13 +353,17 @@ Open the local URL shown by Artisan, usually `http://127.0.0.1:8000`.
 ## Dashboard And Report Behavior
 
 - `/dashboard` is available only after login.
-- `/dashboard` shows client count, active project count, unpaid invoice total, total income, overdue invoices, and five latest payments.
+- `/dashboard` shows client count, active project count, unpaid invoice total, total income, total expenses, net profit, overdue invoices, and five latest payments.
 - `/reports/income` is available only after login.
 - The income report filters payments by payment date using optional `start_date` and `end_date` query parameters.
-- The income report total is calculated from payments matching the selected date filter.
+- The income report filters expenses by expense date using the same optional `start_date` and `end_date` query parameters.
+- The income total is calculated from payments matching the selected date filter.
+- The expense total is calculated from non-deleted expenses matching the selected date filter.
+- Net profit is calculated as filtered income minus filtered expenses.
 - The invoice status recap lists all supported invoice statuses with count and total invoice amount per status.
 - `/reports/income/export` downloads the filtered report as `income-report.xlsx`.
 - The Excel file contains payment date, client, project, invoice number, method, reference, amount, and total rows.
+- The Excel export remains payment-only; it does not export expenses, expense totals, or net profit.
 
 ## Database Impact
 
@@ -350,6 +387,13 @@ v2 Sprint 3 adds document attachment storage:
 - `documents.uploaded_by_user_id` references `users` and restricts deleting a user while uploaded documents reference that user.
 - The migration rollback and reapply flow was verified by QA.
 
+v2 Sprint 4 adds expense storage:
+
+- `expenses`: stores nullable project relation, category, expense date, amount, description, optional vendor/payee, timestamps, and soft delete state.
+- `expenses.project_id` references `projects`, cascades project key updates, and is set to `null` if the related project is deleted.
+- `expenses` includes indexes for date/category and vendor lookups.
+- The expense migration rollback and reapply flow was verified by QA.
+
 Sprint 1 adds these application tables:
 
 - `clients`: stores freelancer client contact and company information.
@@ -367,14 +411,15 @@ v2 Sprint 1 adds no external package dependencies.
 ## RBAC Mapping
 
 - Admin: all current permissions.
-- Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, document view/manage, report view/export. Document write access is limited by parent record rules to invoice and payment documents.
+- Finance: `dashboard.view`, invoice view/create/update/delete, payment create/update/delete, expense view/create/update/delete, document view/manage, report view/export. Document write access is limited by parent record rules to invoice, payment, and expense documents.
 - Project Manager: `dashboard.view`, client view/create/update/delete, project view/create/update/delete, project workflow view/manage, document view/manage. Document write access applies to project, task, and client-related documents.
-- Viewer: `dashboard.view`, `clients.view`, `projects.view`, project workflow view, `invoices.view`, document view, `reports.view`. Viewer can download documents only where the parent record is readable and cannot upload or delete.
+- Viewer: `dashboard.view`, `clients.view`, `projects.view`, project workflow view, `invoices.view`, `expenses.view`, document view, `reports.view`. Viewer can download documents only where the parent record is readable and cannot upload or delete.
+- Project Manager: no expense or report permission in the current mapping, so Project Manager is blocked from expense and finance report access/writes.
 - Finance: no project workflow view/manage permission in the current mapping, so Finance is blocked from project/task document writes.
 
 ## Test Report
 
-Final verified command results after v2 Sprint 3:
+Final verified command results after v2 Sprint 4:
 
 ```bash
 php artisan migrate:fresh --seed --no-interaction
@@ -388,11 +433,13 @@ Project workflow migration rollback check: passed.
 
 Document attachment migration rollback and reapply check: passed.
 
+Expense migration rollback and reapply check: passed.
+
 ```bash
 php artisan test
 ```
 
-Result after v2 Sprint 3: passed with 47 tests and 310 assertions.
+Result after v2 Sprint 4: passed with 53 tests and 380 assertions.
 
 ```powershell
 .\vendor\bin\pint --test
@@ -406,11 +453,11 @@ npm run build
 
 Result: passed. The build showed an optional `fontaine` notice and still exited successfully.
 
-QA verdict after v2 Sprint 3: PASS WITH NOTES.
+QA verdict after v2 Sprint 4: PASS.
 
 Defects found: none.
 
-QA note: document attachment behavior was verified through automated and route-level checks; no cloud storage, preview generation, antivirus scanning, or advanced document workflow was verified.
+QA note: Expense CRUD, soft delete, validation, optional project relation, polymorphic expense documents, finance report totals, Sprint 4 RBAC permissions, regression tests, Pint, and frontend build were verified.
 
 ## Known Limitations
 
@@ -422,10 +469,11 @@ QA note: document attachment behavior was verified through automated and route-l
 - Documents use Laravel local storage only.
 - File delete removes metadata and the local stored file without a recovery workflow.
 - Payment attachment UI is embedded on the invoice detail page.
-- Expense attachment is prepared only through the polymorphic database design; expense CRUD and expense document UI are not implemented.
+- Expense tracking is a baseline CRUD implementation with optional project relation and expense document attachments.
+- XLSX export remains payment-only and does not include expense rows, expense totals, or net profit.
 - Preview generation, document versioning, OCR, antivirus scanning, public sharing links, drag-and-drop upload, and bulk upload are not included.
 - Drag-and-drop kanban is not included.
-- Expense management and finance report enhancement are not included in v2 Sprint 3.
+- Recurring expenses, tax calculation, budgeting, approval workflow, reimbursement workflow, bank import, OCR receipt scanning, payment gateway integration, and external accounting integration are not included.
 - Notifications, external storage, public API, mobile app, and advanced workflow automation are not included.
 - Audit logs and advanced role-management UI are not included.
 - Public API is not included.
@@ -438,6 +486,9 @@ QA note: document attachment behavior was verified through automated and route-l
 - Use `php artisan migrate:fresh --seed --no-interaction` before a clean local demo.
 - Login with `demo@example.com` and `password`.
 - Create clients and projects first, then create invoices from projects and record payments from invoice details.
-- Use the dashboard to review current metrics, overdue invoices, and latest payments.
-- Use the income report page to filter payments by date range and export the filtered result to `.xlsx`.
+- Use expenses to record general expenses or expenses linked to a project.
+- Use expense detail pages to attach expense documents through the existing document panel.
+- Use the dashboard to review current metrics, total expenses, net profit, overdue invoices, and latest payments.
+- Use the income report page to filter payments and expenses by date range.
+- Use the report export when a payment-only `.xlsx` export is needed.
 - Keep `.env` local and do not commit secrets or production credentials.

@@ -2,13 +2,13 @@
 
 Project name: Freelance Job & Invoice Tracker
 
-Project objective: Build a local Laravel web application for freelancers to manage clients, projects, invoices, payments, dashboard metrics, income reports, automated tests, and final documentation.
+Project objective: Build a local Laravel web application for freelancers to manage clients, projects, invoices, payments, expenses, dashboard metrics, finance reports, automated tests, and final documentation.
 
 Approved requirement version: v2 enhancement
 
-Current sprint: v2 Sprint 4 - Expense & Finance Enhancement
+Current sprint: v2 Sprint 5 - Audit Log Hardening
 
-Current status: QA
+Current status: WAITING_SPRINT_PLAN_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -17,10 +17,11 @@ Completed sprints:
 - v2 Sprint 1: Architecture baseline and RBAC foundation.
 - v2 Sprint 2: Project workflow foundation.
 - v2 Sprint 3: Document and attachment foundation.
+- v2 Sprint 4: Expense and finance enhancement.
 
 Pending sprints:
-- v2 Sprint 4: Expense and finance enhancement implementation is completed on `feature/v2-sprint-4-expense-finance` and is under QA verification.
-- v2 future sprints: audit log hardening, documentation hardening.
+- v2 Sprint 5: Audit log hardening plan prepared; waiting for Owner sprint approval.
+- v2 future sprints: documentation hardening.
 
 Approved constraints:
 - Laravel with Blade.
@@ -112,9 +113,13 @@ Decisions:
 - 2026-08-01: v2 Sprint 4 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-08-01: v2 Sprint 4 feature branch created: `feature/v2-sprint-4-expense-finance`.
 - 2026-08-01: v2 Sprint 4 implementation completed by Lincon in commit `8075175 feat: add v2 sprint 4 expenses and finance`; Sprint 4 moved to QA verification.
+- 2026-08-01: v2 Sprint 4 QA completed by Nadella with verdict `PASS`.
+- 2026-08-01: v2 Sprint 4 documentation completed; Sprint Review prepared and waiting for Owner result approval.
+- 2026-08-01: v2 Sprint 4 result approved by Owner via `APPROVE RESULT`.
+- 2026-08-01: v2 Sprint 5 plan prepared for Audit Log Hardening; waiting for Owner sprint approval.
 
 Open issues:
-- No blocking open issues for v2 Sprint 4 implementation handoff.
+- No blocking open issues for v2 Sprint 5 planning.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
 
@@ -128,10 +133,12 @@ Known risks:
 - v2 Sprint 3 attachment relations must stay simple to fit one-day scope.
 - v2 Sprint 4 expense management must not accidentally change approved invoice/payment business rules.
 - v2 Sprint 4 finance reports must clearly separate income, expenses, and net profit calculations.
+- v2 Sprint 5 audit logging must stay tamper-resistant without overbuilding a full compliance module.
+- v2 Sprint 5 must avoid logging secrets, uploaded file contents, or sensitive full payloads.
 
-Last Owner approval: 2026-08-01 - v2 Sprint 4 plan approved.
+Last Owner approval: 2026-08-01 - v2 Sprint 4 result approved.
 
-Next required Owner action: Wait for v2 Sprint 4 QA, documentation, and Sprint Review.
+Next required Owner action: Reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT` for v2 Sprint 5.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -476,3 +483,35 @@ v2 Sprint 4 implementation handoff:
 - RBAC behavior: Admin can manage expenses; Finance can manage expenses, expense documents, and reports; Viewer can read expenses/reports where permitted but cannot write; Project Manager is blocked from expense and finance report access/writes.
 - Programmer verification: `php artisan migrate:fresh --seed --no-interaction` PASS; `php artisan migrate:rollback --step=1 --no-interaction` PASS for Sprint 4 migration; `php artisan migrate --no-interaction` PASS; `php artisan test` PASS with 53 tests and 380 assertions; `.\\vendor\\bin\\pint --test` PASS; `npm run build` PASS with existing optional `fontaine` warning.
 - Known limitations: no recurring expenses, tax calculation, budgeting, approval/reimbursement workflow, bank import, OCR receipt scanning, payment gateway integration, external accounting integration, public API, Docker/deployment automation, or advanced audit log hardening.
+
+v2 Sprint 4 QA and documentation:
+- QA verdict: PASS.
+- QA evidence: `php artisan migrate:fresh --seed --no-interaction` PASS; expense migration rollback/reapply PASS; `php artisan test` PASS with 53 tests and 380 assertions; `vendor/bin/pint --test` PASS; `npm run build` PASS.
+- QA verified: Expense CRUD/soft delete/validation/optional project relation, polymorphic expense documents via `DocumentController`, finance report income/expense/net profit totals, Sprint 4 RBAC permissions, and no unrelated scope.
+- Documented files: `README.md`, `CHANGELOG.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+- Documented: verified Sprint 4 expense behavior, expense document attachment behavior, finance report income/expense/net profit rules, payment-only XLSX export limitation, RBAC mapping, database impact, test evidence, and known limitations.
+
+v2 Sprint 4 review:
+- Sprint goal: Add controlled expense management and enhanced finance reporting for income, expenses, and net profit without changing existing invoice/payment rules.
+- Result: PASS.
+- Completed tasks: S4-V2-PROG-01, S4-V2-PROG-02, S4-V2-PROG-03, S4-V2-QA-01, and S4-V2-DOC-01.
+- Deliverables: expense CRUD with soft delete, optional project relation, expense document attachments, finance report income/expense/net profit totals, dashboard finance summary extension, RBAC-protected expense/report access, automated tests, and documentation updates.
+- Changed modules: expense migration/model/service/controller/requests/views/factory/tests, document attachment integration for expenses, dashboard/report services and views, RBAC permissions, README, CHANGELOG, DECISIONS, and project state.
+- QA result: PASS.
+- Documentation status: Completed.
+- Known limitations: recurring expenses, tax calculation, budgeting, approval/reimbursement workflow, bank import, OCR receipt scanning, payment gateway integration, external accounting integration, public API, Docker/deployment automation, and advanced audit log hardening remain out of scope.
+- Owner approval status: Approved by Owner on 2026-08-01.
+
+v2 Sprint 5 plan:
+- Sprint title: Audit Log Hardening.
+- Sprint goal: Add a tamper-resistant, useful audit log foundation for important business data changes without introducing a complex compliance system.
+- Included scope: audit log database/model/service; automatic audit logging for important create/update/delete/soft-delete actions on clients, projects, invoices, payments, expenses, documents, project milestones, and project tasks; actor, action, target, timestamp, and summarized before/after metadata; read-only audit log list/detail for Admin; filtered audit access for relevant roles where permitted; endpoint authorization; automated feature/regression tests; README/CHANGELOG/DECISIONS/PROJECT_STATE updates after QA.
+- Excluded scope: full compliance certification, immutable external ledger, cryptographic signing, SIEM integration, alerting, real-time event streaming, webhook export, public API, log retention automation, user activity analytics, production monitoring, Docker/deployment automation, and logging secrets or uploaded file contents.
+- Deliverables: reversible migration for audit logs; AuditLog model and audit service/helper; integration into approved modules; read-only Blade UI for audit review; permission mapping; tests for log creation, read-only behavior, authorization, sensitive data exclusion, and regression; documentation updates after QA.
+- Programmer tasks: S5-V2-PROG-01 implement audit log schema, model, and audit service; S5-V2-PROG-02 integrate audit logging into approved business modules; S5-V2-PROG-03 implement read-only audit UI, RBAC, and automated tests; S5-V2-PROG-04 fix QA defects only within approved Sprint 5 scope.
+- QA tasks: S5-V2-QA-01 verify migrations/rollback, audit records for key module changes, read-only behavior, sensitive data exclusion, RBAC behavior, regression flows, tests, Pint, and build.
+- Technical Writer tasks: S5-V2-DOC-01 update README/CHANGELOG/DECISIONS after QA PASS or PASS WITH NOTES with audit scope, database impact, RBAC behavior, sensitive data policy, known limitations, and test evidence.
+- Dependencies: completed v2 Sprint 1 RBAC baseline; completed v2 Sprint 2 workflow foundation; completed v2 Sprint 3 documents foundation; completed v2 Sprint 4 expense and finance foundation.
+- Risks: audit logging can become noisy if every field change is logged without summarization; sensitive payloads must be excluded; integration across many modules may exceed a one-day sprint if scope is not kept to important create/update/delete actions.
+- Acceptance criteria: migration is reversible; audit logs capture actor, action, target type/id, timestamp, and safe summarized changes; important create/update/delete/soft-delete actions are logged for clients, projects, invoices, payments, expenses, documents, milestones, and tasks; audit records are read-only through the application; Admin can view audit logs; non-authorized roles cannot view audit logs; permitted role access does not expose unauthorized module details; logs do not store passwords, tokens, uploaded file contents, or full sensitive payloads; existing module behavior does not regress; automated tests cover log creation, authorization, read-only behavior, sensitive data exclusion, and regression behavior; README/CHANGELOG/DECISIONS are updated after QA.
+- Definition of Done: Lincon completes only approved Sprint 5 implementation; automated tests pass or defects are fixed and retested; Nadella returns final QA verdict minimum PASS WITH NOTES; Sara updates documentation after QA; database impact, audit coverage, sensitive data exclusions, rollback behavior, and known limitations are recorded; Scofield sends Sprint Review for Owner result approval.
