@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 1 - Architecture Baseline and RBAC Foundation
 
-Current status: WAITING_SPRINT_PLAN_APPROVAL
+Current status: IN_PROGRESS
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -83,9 +83,11 @@ Decisions:
 - 2026-07-31: Owner requested Sprint 3 revision via `REVISION RESULT` because Excel export still errored.
 - 2026-07-31: Sprint 3 result approved by Owner via `APPROVE RESULT`.
 - 2026-07-31: v2 enhancement requirement approved by Owner via `APPROVE REQUIREMENT`.
+- 2026-07-31: v2 Sprint 1 plan approved by Owner via `APPROVE SPRINT`.
+- 2026-07-31: v2 Sprint 1 feature branch created: `feature/v2-sprint-1-rbac-foundation`.
 
 Open issues:
-- v2 Sprint 1 plan is ready and waiting for Owner approval.
+- v2 Sprint 1 implementation is in progress.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -94,7 +96,7 @@ Known risks:
 
 Last Owner approval: 2026-07-31 - Sprint 3 result approved.
 
-Next required Owner action: Review v2 Sprint 1 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
+Next required Owner action: Wait for v2 Sprint 1 implementation, QA, documentation, and Sprint Review.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
