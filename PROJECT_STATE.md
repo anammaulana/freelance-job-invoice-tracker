@@ -95,9 +95,11 @@ Decisions:
 - 2026-08-01: v2 Sprint 2 plan prepared; waiting for Owner sprint approval.
 - 2026-08-01: v2 Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-08-01: v2 Sprint 2 feature branch created: `feature/v2-sprint-2-project-workflow`.
+- 2026-08-01: v2 Sprint 2 implementation completed by Lincon and QA completed by Nadella with verdict `PASS`.
+- 2026-08-01: v2 Sprint 2 documentation completed by Sara; Sprint Review still requires Owner result approval.
 
 Open issues:
-- None for v2 Sprint 2 implementation start.
+- None for v2 Sprint 2 documentation. Sprint result is not approved yet.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -345,3 +347,24 @@ v2 Sprint 2 plan:
 - Risks: progress calculation can become ambiguous if milestone weight and task progress rules are not kept simple; RBAC route coverage can regress if new workflow routes are not consistently protected; activity timeline must not be treated as full audit log yet.
 - Acceptance criteria: migrations are reversible; project milestones can be created, viewed, updated, and deleted or soft-deleted according to implemented business rules; milestone target date and weight are validated; project tasks can be created, viewed, updated, and deleted or soft-deleted according to implemented business rules; task status is limited to Backlog, To Do, In Progress, Review, Done, and Cancelled; task assignee, priority, due date, description, and progress are validated; project progress updates from milestone/task completion using a documented formula; activity timeline records important milestone/task changes in Sprint 2 scope; Admin can manage workflow data; Project Manager can manage workflow data; Viewer has read-only access; Finance has no unauthorized project workflow write access; existing stable modules still pass regression tests; README/CHANGELOG/DECISIONS are updated after QA.
 - Definition of Done: Lincon completes only approved Sprint 2 implementation; automated tests pass or defects are fixed and retested; Nadella returns final QA verdict minimum PASS WITH NOTES; Sara updates documentation after QA; database impact and rollback behavior are recorded; known limitations are listed; Scofield sends Sprint Review for Owner result approval.
+
+v2 Sprint 2 implementation handoff:
+- Programmer tasks: S2-V2-PROG-01, S2-V2-PROG-02, S2-V2-PROG-03.
+- Implemented scope: milestone CRUD baseline, task CRUD baseline, limited task status workflow, project progress calculation baseline, activity timeline baseline, RBAC protection for workflow routes/actions, and automated tests.
+- Database impact: added `projects.progress`, `project_milestones`, `project_tasks`, and `project_activities`.
+- Progress formula: weighted milestone task progress when milestones exist; average project task progress when no milestones exist; `0` when no workflow records exist.
+- Known out-of-scope: drag-and-drop kanban, task attachments, document module, expense module, full audit log, finance report enhancement, public API, Docker, external storage, notifications, mobile app, production deployment, and advanced workflow automation.
+
+v2 Sprint 2 QA result:
+- QA task: S2-V2-QA-01.
+- Verdict: PASS.
+- Commands passed: `php artisan test` with 40 tests and 272 assertions, `.\\vendor\\bin\\pint --test`, `npm run build`, and rollback verification.
+- Notes: `npm run build` passes with optional `fontaine` warning.
+- Defects found: None.
+
+v2 Sprint 2 documentation:
+- Documentation task: S2-V2-DOC-01.
+- Status: Completed.
+- Files updated: `README.md`, `CHANGELOG.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+- Documented: verified workflow behavior, RBAC behavior, database impact, progress formula, activity timeline baseline, QA evidence, and known limitations.
+- Owner approval status: Sprint 2 result is not approved yet.

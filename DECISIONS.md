@@ -21,3 +21,18 @@
 - Project Manager is limited to dashboard, client, and project permissions.
 - Viewer is read-only for dashboard, clients, projects, invoices, and reports.
 - RBAC management UI, audit logging, project workflow, documents, expenses, API, Docker, and production deployment are outside v2 Sprint 1.
+
+## v2 Sprint 2 Project Workflow Baseline
+
+- Project workflow remains part of the modular monolith and uses the existing Controller -> Service -> Model pattern.
+- `ProjectWorkflowService` owns the project progress calculation so controllers do not hold workflow business logic.
+- Project progress is persisted in `projects.progress` for simple display and reporting use in later sprints.
+- When active milestones exist, project progress is calculated from weighted milestone progress.
+- Milestone progress is calculated from the average progress of active tasks linked to that milestone.
+- A milestone with no active tasks contributes `0%` to the weighted calculation.
+- When no active milestones exist, project progress is calculated from the average progress of active project tasks.
+- When no active milestones or active tasks exist, project progress is `0%`.
+- `project_activities` is a lightweight workflow timeline for milestone/task create, update, and delete events.
+- The activity timeline is not a full audit log and must not be treated as the future audit module.
+- Task workflow is intentionally limited to `Backlog`, `To Do`, `In Progress`, `Review`, `Done`, and `Cancelled`.
+- v2 Sprint 2 excludes drag-and-drop kanban, task attachments, document management, expense management, finance report enhancement, notifications, external storage, public API, mobile app, production deployment, and advanced workflow automation.
