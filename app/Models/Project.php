@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['client_id', 'name', 'description', 'start_date', 'deadline', 'project_value', 'status'])]
+#[Fillable(['client_id', 'name', 'description', 'start_date', 'deadline', 'project_value', 'status', 'progress'])]
 class Project extends Model
 {
     public const STATUS_DRAFT = 'Draft';
@@ -36,6 +36,7 @@ class Project extends Model
             'start_date' => 'date',
             'deadline' => 'date',
             'project_value' => 'decimal:2',
+            'progress' => 'integer',
         ];
     }
 
@@ -47,5 +48,20 @@ class Project extends Model
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function milestones(): HasMany
+    {
+        return $this->hasMany(ProjectMilestone::class);
+    }
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(ProjectTask::class);
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(ProjectActivity::class);
     }
 }

@@ -35,7 +35,13 @@ class ProjectController extends Controller
 
     public function show(Project $project): View
     {
-        $project->load('client');
+        $project->load([
+            'client',
+            'milestones' => fn ($query) => $query->orderBy('target_date'),
+            'milestones.tasks',
+            'tasks' => fn ($query) => $query->with('milestone')->orderBy('due_date')->latest(),
+            'activities' => fn ($query) => $query->with('user')->latest()->limit(10),
+        ]);
 
         return view('projects.show', compact('project'));
     }

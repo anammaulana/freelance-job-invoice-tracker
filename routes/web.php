@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectMilestoneController;
+use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +41,12 @@ Route::middleware('auth')->group(function () {
         ->middlewareFor(['create', 'store'], 'permission:projects.create')
         ->middlewareFor(['edit', 'update'], 'permission:projects.update')
         ->middlewareFor(['destroy'], 'permission:projects.delete');
+    Route::resource('projects.milestones', ProjectMilestoneController::class)
+        ->except(['index', 'show'])
+        ->middlewareFor(['create', 'store', 'edit', 'update', 'destroy'], 'permission:project-workflow.manage');
+    Route::resource('projects.tasks', ProjectTaskController::class)
+        ->except(['index', 'show'])
+        ->middlewareFor(['create', 'store', 'edit', 'update', 'destroy'], 'permission:project-workflow.manage');
     Route::resource('invoices', InvoiceController::class)
         ->middlewareFor(['index', 'show'], 'permission:invoices.view')
         ->middlewareFor(['create', 'store'], 'permission:invoices.create')
