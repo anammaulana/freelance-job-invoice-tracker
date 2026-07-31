@@ -54,14 +54,39 @@ class ClientCrudTest extends TestCase
         $this->assertDatabaseMissing('clients', ['id' => $client->id]);
     }
 
-    public function test_client_requires_valid_fields(): void
+    public function test_client_create_requires_approved_fields(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user)->post(route('clients.store'), [
             'name' => '',
             'email' => 'not-an-email',
-        ])->assertSessionHasErrors(['name', 'email']);
+        ])->assertSessionHasErrors([
+            'name',
+            'email',
+            'phone_number',
+            'company',
+            'address',
+        ]);
+    }
+
+    public function test_client_update_requires_approved_fields(): void
+    {
+        $user = User::factory()->create();
+        $client = Client::factory()->create();
+
+        $this->actingAs($user)->put(route('clients.update', $client), [
+            'name' => 'Updated Client',
+            'email' => '',
+            'phone_number' => '',
+            'company' => '',
+            'address' => '',
+        ])->assertSessionHasErrors([
+            'email',
+            'phone_number',
+            'company',
+            'address',
+        ]);
     }
 
     public function test_client_cannot_be_deleted_when_it_has_active_project(): void

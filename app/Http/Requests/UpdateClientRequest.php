@@ -24,10 +24,10 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'phone_number' => ['nullable', 'string', 'max:50'],
-            'company' => ['nullable', 'string', 'max:255'],
-            'address' => ['nullable', 'string', 'max:1000'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone_number' => ['required', 'string', 'max:50'],
+            'company' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:1000'],
         ];
     }
 }

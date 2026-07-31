@@ -27,7 +27,7 @@ class UpdateProjectRequest extends FormRequest
         return [
             'client_id' => ['required', 'exists:clients,id'],
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string', 'max:2000'],
+            'description' => ['required', 'string', 'max:2000'],
             'start_date' => ['required', 'date'],
             'deadline' => ['required', 'date', 'after_or_equal:start_date'],
             'project_value' => ['required', 'numeric', 'min:0', 'max:999999999.99'],

@@ -69,6 +69,7 @@ class ProjectCrudTest extends TestCase
         $this->actingAs($user)->post(route('projects.store'), [
             'client_id' => $client->id,
             'name' => 'Invalid Status Project',
+            'description' => 'Status validation coverage.',
             'start_date' => '2026-08-01',
             'deadline' => '2026-08-15',
             'project_value' => '1000',
@@ -84,10 +85,43 @@ class ProjectCrudTest extends TestCase
         $this->actingAs($user)->post(route('projects.store'), [
             'client_id' => $client->id,
             'name' => 'Invalid Date Project',
+            'description' => 'Date validation coverage.',
             'start_date' => '2026-08-15',
             'deadline' => '2026-08-01',
             'project_value' => '1000',
             'status' => Project::STATUS_DRAFT,
         ])->assertSessionHasErrors('deadline');
+    }
+
+    public function test_project_create_requires_description(): void
+    {
+        $user = User::factory()->create();
+        $client = Client::factory()->create();
+
+        $this->actingAs($user)->post(route('projects.store'), [
+            'client_id' => $client->id,
+            'name' => 'Missing Description Project',
+            'start_date' => '2026-08-01',
+            'deadline' => '2026-08-15',
+            'project_value' => '1000',
+            'status' => Project::STATUS_DRAFT,
+        ])->assertSessionHasErrors('description');
+    }
+
+    public function test_project_update_requires_description(): void
+    {
+        $user = User::factory()->create();
+        $client = Client::factory()->create();
+        $project = Project::factory()->for($client)->create();
+
+        $this->actingAs($user)->put(route('projects.update', $project), [
+            'client_id' => $client->id,
+            'name' => 'Missing Description Project',
+            'description' => '',
+            'start_date' => '2026-08-01',
+            'deadline' => '2026-08-15',
+            'project_value' => '1000',
+            'status' => Project::STATUS_DRAFT,
+        ])->assertSessionHasErrors('description');
     }
 }
