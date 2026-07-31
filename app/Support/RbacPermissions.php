@@ -42,6 +42,7 @@ final class RbacPermissions
             'expenses.delete' => 'Delete expenses',
             'documents.view' => 'View documents',
             'documents.manage' => 'Manage documents',
+            'audit-logs.view' => 'View audit logs',
             'reports.view' => 'View reports',
             'reports.export' => 'Export reports',
         ];

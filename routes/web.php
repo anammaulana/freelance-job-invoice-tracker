@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
@@ -32,6 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports/income/export', [ReportController::class, 'exportIncome'])
         ->middleware('permission:reports.export')
         ->name('reports.income.export');
+    Route::get('/audit-logs', [AuditLogController::class, 'index'])
+        ->middleware('permission:audit-logs.view')
+        ->name('audit-logs.index');
+    Route::get('/audit-logs/{auditLog}', [AuditLogController::class, 'show'])
+        ->middleware('permission:audit-logs.view')
+        ->name('audit-logs.show');
 
     Route::resource('clients', ClientController::class)
         ->middlewareFor(['index', 'show'], 'permission:clients.view')

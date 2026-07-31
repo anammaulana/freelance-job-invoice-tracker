@@ -32,6 +32,9 @@
                     @can('reports.view')
                         <a href="{{ route('reports.income') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('reports.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Reports</a>
                     @endcan
+                    @can('audit-logs.view')
+                        <a href="{{ route('audit-logs.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('audit-logs.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Audit Logs</a>
+                    @endcan
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button class="rounded-md px-3 py-2 text-zinc-700 hover:bg-zinc-100">Logout</button>
