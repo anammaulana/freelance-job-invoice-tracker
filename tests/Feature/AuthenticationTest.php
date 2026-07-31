@@ -30,6 +30,7 @@ class AuthenticationTest extends TestCase
     {
         $this->get(route('clients.index'))->assertRedirect(route('login'));
         $this->get(route('projects.index'))->assertRedirect(route('login'));
+        $this->get(route('invoices.index'))->assertRedirect(route('login'));
     }
 
     public function test_invalid_login_returns_validation_error(): void

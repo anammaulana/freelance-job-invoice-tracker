@@ -16,6 +16,7 @@
                 <nav class="flex items-center gap-2 text-sm">
                     <a href="{{ route('clients.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('clients.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Clients</a>
                     <a href="{{ route('projects.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('projects.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Projects</a>
+                    <a href="{{ route('invoices.index') }}" class="rounded-md px-3 py-2 {{ request()->routeIs('invoices.*') ? 'bg-zinc-900 text-white' : 'text-zinc-700 hover:bg-zinc-100' }}">Invoices</a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button class="rounded-md px-3 py-2 text-zinc-700 hover:bg-zinc-100">Logout</button>
