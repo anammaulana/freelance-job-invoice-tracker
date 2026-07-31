@@ -2,6 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Client;
+use App\Models\Invoice;
+use App\Models\Payment;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -30,6 +34,25 @@ class AuthenticationTest extends TestCase
     {
         $this->get(route('clients.index'))->assertRedirect(route('login'));
         $this->get(route('projects.index'))->assertRedirect(route('login'));
+        $this->get(route('invoices.index'))->assertRedirect(route('login'));
+    }
+
+    public function test_payment_pages_require_authentication(): void
+    {
+        $invoice = Invoice::factory()->for(Project::factory()->for(Client::factory()))->create();
+        $payment = Payment::factory()->for($invoice)->create();
+
+        $this->get(route('invoices.payments.create', $invoice))->assertRedirect(route('login'));
+        $this->post(route('invoices.payments.store', $invoice), [
+            'payment_date' => '2026-08-12',
+            'amount' => '100.00',
+        ])->assertRedirect(route('login'));
+        $this->get(route('invoices.payments.edit', [$invoice, $payment]))->assertRedirect(route('login'));
+        $this->put(route('invoices.payments.update', [$invoice, $payment]), [
+            'payment_date' => '2026-08-13',
+            'amount' => '150.00',
+        ])->assertRedirect(route('login'));
+        $this->delete(route('invoices.payments.destroy', [$invoice, $payment]))->assertRedirect(route('login'));
     }
 
     public function test_invalid_login_returns_validation_error(): void
