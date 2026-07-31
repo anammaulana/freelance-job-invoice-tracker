@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 2 - Project Workflow Foundation
 
-Current status: IN_PROGRESS
+Current status: WAITING_SPRINT_RESULT_APPROVAL
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -17,7 +17,7 @@ Completed sprints:
 - v2 Sprint 1: Architecture baseline and RBAC foundation.
 
 Pending sprints:
-- v2 Sprint 2: Project workflow foundation is in progress.
+- v2 Sprint 2: Project workflow foundation is implemented, QA passed, documentation completed, and waiting for Owner result approval.
 - v2 future sprints: documents, expenses/finance enhancement, audit log hardening, documentation hardening.
 
 Approved constraints:
@@ -97,9 +97,10 @@ Decisions:
 - 2026-08-01: v2 Sprint 2 feature branch created: `feature/v2-sprint-2-project-workflow`.
 - 2026-08-01: v2 Sprint 2 implementation completed by Lincon and QA completed by Nadella with verdict `PASS`.
 - 2026-08-01: v2 Sprint 2 documentation completed by Sara; Sprint Review still requires Owner result approval.
+- 2026-08-01: v2 Sprint 2 Review prepared; waiting for Owner result approval.
 
 Open issues:
-- None for v2 Sprint 2 documentation. Sprint result is not approved yet.
+- None for v2 Sprint 2 review. Sprint result is not approved yet.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -110,7 +111,7 @@ Known risks:
 
 Last Owner approval: 2026-08-01 - v2 Sprint 2 plan approved.
 
-Next required Owner action: Wait for v2 Sprint 2 implementation, QA, documentation, and Sprint Review.
+Next required Owner action: Review v2 Sprint 2 result and reply with `APPROVE RESULT`, `REVISION RESULT`, or `CANCEL PROJECT`.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -368,3 +369,14 @@ v2 Sprint 2 documentation:
 - Files updated: `README.md`, `CHANGELOG.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
 - Documented: verified workflow behavior, RBAC behavior, database impact, progress formula, activity timeline baseline, QA evidence, and known limitations.
 - Owner approval status: Sprint 2 result is not approved yet.
+
+v2 Sprint 2 review:
+- Sprint goal: Add a stable milestone and task workflow foundation with simple status tracking, baseline progress calculation, and project activity timeline without complex drag-and-drop.
+- Result: PASS.
+- Completed tasks: S2-V2-PROG-01, S2-V2-PROG-02, S2-V2-PROG-03, S2-V2-QA-01, and S2-V2-DOC-01.
+- Deliverables: milestone CRUD baseline, task CRUD baseline, simple task status workflow, project progress calculation baseline, lightweight activity timeline, RBAC-protected workflow actions, feature/regression tests, and documentation updates.
+- Changed modules: project workflow migration, Project/Milestone/Task/Activity models, workflow controllers/requests/service, nested workflow routes, project detail and workflow Blade forms, RBAC permissions, README, CHANGELOG, DECISIONS, tests, and project state.
+- QA result: PASS.
+- Documentation status: Completed.
+- Known limitations: timeline is baseline only and not full audit log; browser-based manual UI testing was not performed; drag-and-drop kanban, attachments, documents, expenses, notifications, public API, Docker, deployment, and advanced workflow automation remain out of scope.
+- Owner approval required before marking v2 Sprint 2 complete and preparing v2 Sprint 3 plan.
