@@ -8,7 +8,7 @@ Approved requirement version: v1
 
 Current sprint: Sprint 2 - Invoice Management and Payment Tracking
 
-Current status: QA
+Current status: DOCUMENTATION
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -68,7 +68,7 @@ Decisions:
 - 2026-07-31: Sprint 2 plan approved by Owner via `APPROVE SPRINT`.
 
 Open issues:
-- Sprint 2 implementation completed locally by Lincon and is waiting for QA verification.
+- Sprint 2 QA passed with notes and documentation is in progress.
 
 Known risks:
 - Three one-day sprints are tight for full CRUD, business rules, dashboard, reports, tests, QA, and documentation.
@@ -77,7 +77,7 @@ Known risks:
 
 Last Owner approval: 2026-07-31 - Sprint 2 plan approved.
 
-Next required Owner action: Wait for Sprint 2 QA result.
+Next required Owner action: Wait for Sprint 2 documentation and sprint review.
 
 Sprint 2 implementation handoff:
 - Programmer task: S2-PROG-01
@@ -88,6 +88,14 @@ Sprint 2 implementation handoff:
 - Database impact: added `invoices` and `payments` tables; payments cascade when invoice is deleted.
 - Programmer verification: `php artisan migrate:fresh --seed --no-interaction` passed; `php artisan test` passed with 22 tests and 110 assertions; `.\\vendor\\bin\\pint --test` passed; `npm run build` passed; `php artisan route:list --except-vendor` passed.
 - Known out-of-scope for Sprint 2: dashboard, Excel export, income report, public API, Docker, and multi-role authorization.
+
+Sprint 2 QA result:
+- QA task: S2-QA-01
+- Verdict: PASS WITH NOTES
+- Commands passed: `php artisan migrate:fresh --seed --no-interaction`, `php artisan test` with 22 tests and 110 assertions, `.\\vendor\\bin\\pint --test`, `npm run build`, and `php artisan route:list --path=invoices -v`.
+- Acceptance criteria result: invoice CRUD, invoice number generation, invoice validation, project invoice total limit, multiple payments, payment total limit, Partial/Paid status updates, status recalculation after payment update/delete, auth protection, SQLite migration/seed, automated tests, formatting, and build all passed.
+- Defects found: None.
+- Note: Explicit automated auth coverage exists for invoice index; nested payment auth protection was verified through route middleware evidence rather than a dedicated unauthenticated payment feature test.
 
 Sprint 1 implementation handoff:
 - Project folder: `C:\Users\anam.maulana\.openclaw\workspace\projects\freelance-job-invoice-tracker`
