@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 4 - Expense & Finance Enhancement
 
-Current status: WAITING_SPRINT_PLAN_APPROVAL
+Current status: IN_PROGRESS
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -19,7 +19,7 @@ Completed sprints:
 - v2 Sprint 3: Document and attachment foundation.
 
 Pending sprints:
-- v2 Sprint 4: Expense and finance enhancement plan is prepared; waiting for Owner sprint approval before implementation.
+- v2 Sprint 4: Expense and finance enhancement implementation is approved and in progress on `feature/v2-sprint-4-expense-finance`.
 - v2 future sprints: audit log hardening, documentation hardening.
 
 Approved constraints:
@@ -109,9 +109,11 @@ Decisions:
 - 2026-08-01: v2 Sprint 3 documentation completed by Sara; Sprint Review is ready for Scofield preparation.
 - 2026-08-01: v2 Sprint 3 result approved by Owner via `APPROVE RESULT`.
 - 2026-08-01: v2 Sprint 4 plan prepared for Expense & Finance Enhancement; waiting for Owner sprint approval.
+- 2026-08-01: v2 Sprint 4 plan approved by Owner via `APPROVE SPRINT`.
+- 2026-08-01: v2 Sprint 4 feature branch created: `feature/v2-sprint-4-expense-finance`.
 
 Open issues:
-- No blocking open issues for v2 Sprint 4 planning.
+- No blocking open issues for v2 Sprint 4 implementation handoff.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
 
@@ -126,9 +128,9 @@ Known risks:
 - v2 Sprint 4 expense management must not accidentally change approved invoice/payment business rules.
 - v2 Sprint 4 finance reports must clearly separate income, expenses, and net profit calculations.
 
-Last Owner approval: 2026-08-01 - v2 Sprint 3 result approved.
+Last Owner approval: 2026-08-01 - v2 Sprint 4 plan approved.
 
-Next required Owner action: Review v2 Sprint 4 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
+Next required Owner action: Wait for v2 Sprint 4 implementation, QA, documentation, and Sprint Review.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
