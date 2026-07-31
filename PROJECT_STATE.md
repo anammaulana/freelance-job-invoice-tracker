@@ -8,7 +8,7 @@ Approved requirement version: v2 enhancement
 
 Current sprint: v2 Sprint 5 - Audit Log Hardening
 
-Current status: QA
+Current status: DOCUMENTATION
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -20,7 +20,7 @@ Completed sprints:
 - v2 Sprint 4: Expense and finance enhancement.
 
 Pending sprints:
-- v2 Sprint 5: Audit log hardening implemented by Lincon and moved to QA verification.
+- v2 Sprint 5: Audit log hardening passed QA with notes and moved to documentation.
 - v2 future sprints: documentation hardening.
 
 Approved constraints:
@@ -120,9 +120,10 @@ Decisions:
 - 2026-08-01: v2 Sprint 5 plan approved by Owner via `APPROVE SPRINT`.
 - 2026-08-01: v2 Sprint 5 feature branch created: `feature/v2-sprint-5-audit-log-hardening`.
 - 2026-08-01: v2 Sprint 5 implementation completed by Lincon in commit `6cca713 feat: add v2 sprint 5 audit logging`; Sprint 5 moved to QA verification.
+- 2026-08-01: v2 Sprint 5 QA completed by Nadella with verdict `PASS WITH NOTES`; documentation may proceed.
 
 Open issues:
-- No blocking open issues for v2 Sprint 5 QA handoff.
+- No blocking open issues for v2 Sprint 5 documentation handoff.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
 
@@ -141,7 +142,7 @@ Known risks:
 
 Last Owner approval: 2026-08-01 - v2 Sprint 5 plan approved.
 
-Next required Owner action: Wait for v2 Sprint 5 QA, documentation, and Sprint Review.
+Next required Owner action: Wait for v2 Sprint 5 documentation and Sprint Review.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -528,3 +529,14 @@ v2 Sprint 5 implementation handoff:
 - Programmer verification: `php artisan migrate:fresh --seed --no-interaction` PASS; audit migration rollback/reapply PASS; `php artisan test` PASS with 57 tests and 440 assertions; `vendor/bin/pint --test` PASS; `npm run build` PASS with optional `fontaine` notice only.
 - Known limitations: audit log is an application/database audit foundation only; no external immutable ledger, signing, retention automation, alerts, or SIEM integration; unauthenticated system/background changes may record actor as `System`.
 - Current QA task: S5-V2-QA-01 verify migrations/rollback, audit records for key module changes, read-only behavior, sensitive data exclusion, RBAC behavior, regression flows, tests, Pint, and build.
+
+v2 Sprint 5 QA result:
+- QA task: S5-V2-QA-01.
+- QA verdict: PASS WITH NOTES.
+- QA evidence: `git status --short --branch` clean on `feature/v2-sprint-5-audit-log-hardening`; `php artisan migrate:fresh --seed --no-interaction` PASS; audit migration rollback/reapply PASS; `php artisan test` PASS with 57 tests and 440 assertions; `vendor/bin/pint --test` PASS; `npm run build` PASS with optional `fontaine` notice only.
+- Acceptance criteria: 11/11 acceptable; criteria 1-6 and 8-11 PASS; criterion 7 PASS WITH NOTE.
+- QA note: current seeded RBAC gives `audit-logs.view` only to Admin, so no unauthorized module exposure in approved roles; residual future risk exists if a custom non-Admin DB role is later given `audit-logs.view` because the controller does not filter logs by target module permission.
+- Defects found: none.
+- Regression risk: low.
+- Documentation status: may proceed to Sara.
+- Current documentation task: S5-V2-DOC-01 update README, CHANGELOG, and DECISIONS with audit scope, database impact, RBAC behavior, sensitive data policy, known limitations, test evidence, and QA note.
