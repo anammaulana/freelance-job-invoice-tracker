@@ -6,9 +6,9 @@ Project objective: Build a local Laravel web application for freelancers to mana
 
 Approved requirement version: v2 enhancement
 
-Current sprint: v2 Sprint 6 - Final Documentation & Handover Hardening
+Current sprint: No active sprint
 
-Current status: WAITING_SPRINT_PLAN_APPROVAL
+Current status: WAITING_OWNER_DECISION
 
 Completed sprints:
 - Sprint 1: Setup project, authentication, database, client management, and project management.
@@ -21,7 +21,7 @@ Completed sprints:
 - v2 Sprint 5: Audit log hardening.
 
 Pending sprints:
-- v2 Sprint 6: Final documentation and handover hardening awaiting Owner sprint approval.
+- None currently approved.
 
 Approved constraints:
 - Laravel with Blade.
@@ -125,9 +125,10 @@ Decisions:
 - 2026-08-01: v2 Sprint 5 Review prepared; waiting for Owner result approval.
 - 2026-08-01: v2 Sprint 5 result approved by Owner via `APPROVE RESULT`.
 - 2026-08-01: v2 Sprint 6 plan prepared for Final Documentation & Handover Hardening; waiting for Owner sprint approval.
+- 2026-08-01: Owner cancelled v2 Sprint 6 via `CANCEL SPRINT`; no Sprint 6 work delegated.
 
 Open issues:
-- No blocking open issues for v2 Sprint 6 planning gate.
+- No active sprint is approved.
 - QA note carried forward: `npm run build` passes with optional `fontaine` warning.
 - QA note carried forward: custom non-Admin roles with only `audit-logs.view` may need target-module filtering before broader audit access is enabled.
 - Advanced document workflows remain future scope and were not verified in v2 Sprint 3.
@@ -146,9 +147,9 @@ Known risks:
 - v2 Sprint 5 must avoid logging secrets, uploaded file contents, or sensitive full payloads.
 - v2 Sprint 6 must document verified behavior only and must not imply excluded production, API, mobile, external integration, or compliance capabilities are implemented.
 
-Last Owner approval: 2026-08-01 - v2 Sprint 5 result approved.
+Last Owner approval: 2026-08-01 - v2 Sprint 6 cancelled.
 
-Next required Owner action: Review v2 Sprint 6 plan and reply with `APPROVE SPRINT`, `REVISION SPRINT`, or `CANCEL SPRINT`.
+Next required Owner action: Provide a new explicit instruction if another sprint, revision, merge, release, or final handover action is needed.
 
 v2 approved requirement:
 - Objective: Enhance the existing application into a fuller freelance management system with project workflow, finance, documents, audit, and access control.
@@ -583,4 +584,4 @@ v2 Sprint 6 plan:
 - Risks: documentation can drift from actual behavior if not checked against source and QA evidence; final handover may accidentally overstate future-scope features; one-day scope must avoid turning documentation hardening into implementation.
 - Acceptance criteria: README has clear local setup and demo instructions; verified v1 and v2 features are summarized accurately; roles and permissions are documented at a usable level; database impact and key relationships are documented through ERD or equivalent Markdown summary; final test/build evidence is recorded; known limitations and future scope are explicit; documentation does not expose secrets or client data; documentation does not claim excluded features as implemented; QA verifies documentation against the application and commands; PROJECT_STATE records Sprint 6 review and final approval gate status.
 - Definition of Done: Sara completes documentation only for verified behavior; Nadella returns final QA verdict minimum PASS WITH NOTES; any mismatch found by QA is corrected and retested; no application feature changes are introduced without Owner approval; Scofield sends Sprint Review for Owner result approval.
-- Approval status: Waiting for Owner sprint approval.
+- Approval status: Cancelled by Owner on 2026-08-01 via `CANCEL SPRINT`; no tasks were delegated.
